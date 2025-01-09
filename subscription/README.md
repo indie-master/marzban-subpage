@@ -13,7 +13,7 @@ Connect to the server and upload the file:
 
 Russian version:
 ```
-sudo wget -O /var/lib/marzban/templates/subscription/index.html https://raw.githubusercontent.com/jomertix/marzban-tools/master/subscription/index.html
+sudo wget -O /var/lib/marzban/templates/subscription/index.html https://raw.githubusercontent.com/indie-master/marzban-subpage/refs/heads/master/subscription/index.html
 ```
 English version:
 ```
