@@ -94,7 +94,7 @@ openssl rand -hex 8
           "fingerprint": "chrome",
           "spiderX": "",
           "show": false,
-          "shortId": "807e4f530af1ed68",
+          "shortId": "shortId_RU_server",
           "serverName": "destname.ru",
           "publicKey": "publicKey_RU_server"
         },
@@ -227,4 +227,46 @@ Andrej Master, [22.01.2025 15:52]
   },
   "transport": {}
 }
+```
+
+### Than for routing you need to use only this fragment:
+```
+  "outbounds": [
+      "tag": "proxy",
+      "protocol": "vless",
+      "streamSettings": {
+        "realitySettings": {
+          "fingerprint": "chrome",
+          "spiderX": "",
+          "show": false,
+          "shortId": "shortId_RU_server",
+          "serverName": "destname.ru",
+          "publicKey": "publicKey_RU_server"
+        },
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          }
+        },
+        "security": "reality",
+        "network": "tcp"
+      },
+      "settings": {
+        "vnext": [
+          {
+            "users": [
+              {
+                "encryption": "none",
+                "level": 8,
+                "flow": "xtls-rprx-vision",
+                "id": "id_RU_server",
+                "email": ""
+              }
+            ],
+            "address": "address_RU_server",
+            "port": 443
+          }
+        ]
+      }
+    }
 ```
