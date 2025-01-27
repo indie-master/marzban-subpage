@@ -1,0 +1,223 @@
+{
+  "log": {
+    "access": "/var/lib/marzban/access.log",
+    "error": "/var/lib/marzban/error.log",
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "tag": "VLESS TCP REALITY",
+      "listen": "0.0.0.0",
+      "port": 443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "dest": "yourdest.com:443",
+          "xver": 0,
+          "serverNames": [
+            "yourdest.com",
+            "www.yourdest.com"
+          ],
+          "privateKey": "privateKey",
+          "shortIds": [
+            "shortId"
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    },
+  ],
+  "outbounds": [
+    {
+      "tag": "DIRECT",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "ForceIPv4"
+      }
+    },
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "streamSettings": {
+        "realitySettings": {
+          "fingerprint": "chrome",
+          "spiderX": "",
+          "show": false,
+          "shortId": "shortId_RU_server",
+          "serverName": "servername.RU",
+          "publicKey": "publicKey_RU_server"
+        },
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          }
+        },
+        "security": "reality",
+        "network": "tcp"
+      },
+      "settings": {
+        "vnext": [
+          {
+            "users": [
+              {
+                "encryption": "none",
+                "level": 8,
+                "flow": "xtls-rprx-vision",
+                "id": "id_RU_server",
+                "email": ""
+              }
+            ],
+            "address": "address_RU_server",
+            "port": 443
+          }
+        ]
+      }
+    },
+    {
+      "tag": "WARP",
+      "protocol": "wireguard",
+      "settings": {
+        "secretkey": "secret_WARP_key",
+        "DNS": [
+          "1.1.1.1",
+          "1.0.0.1"
+        ],
+        "address": [
+          "172.16.0.2/32",
+          "2606:4700:110:8bc4:ea46:5935:171b:6cdd/128"
+        ],
+        "peers": [
+          {
+            "publicKey": "public_WARP_key",
+            "endpoint": "engage.cloudflareclient.com:2408"
+          }
+        ],
+        "kernelMode": false,
+        "mtu": 1280,
+        "domainStrategy": "ForceIPv4"
+      }
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "BLOCK"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "domainMatcher": "hybrid",
+    "network": "tcp,udp",
+    "rules": [
+      {
+        "outboundTag": "DIRECT",
+        "domain": [
+          "full:cp.cloudflare.com",
+          "domain:msftconnecttest.com",
+          "domain:msftncsi.com",
+          "domain:connectivitycheck.gstatic.com",
+          "domain:captive.apple.com",
+          "full:detectportal.firefox.com",
+          "domain:networkcheck.kde.org",
+          "full:*.gstatic.com"
+        ],
+        "type": "field"
+      },
+      {
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "BLOCK",
+        "type": "field"
+      },
+      {
+        "domain": [
+          "geosite:private",
+          "geosite:category-ads-all"
+        ],
+        "outboundTag": "BLOCK",
+        "type": "field"
+      },
+      {
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "BLOCK",
+        "type": "field"
+      },
+      {
+        "ip": [
+          "geoip:ru"
+        ],
+        "type": "field",
+        "outboundTag": "proxy"
+      },
+      {
+        "domain": [
+          "geosite:category-ru",
+          "geosite:category-gov-ru",
+          "domain:2ip.io"
+        ],
+        "type": "field",
+        "outboundTag": "proxy"
+      },
+      {
+        "domain": [
+          "geosite:speedtest",
+          "domain:ripe.net",
+          "domain:myip.com",
+          "domain:iplocation.net",
+          "domain:browserleaks.com",
+          "domain:ip-score.com",
+          "domain:whatismyip.com",
+          "domain:ipleak.net",
+          "domain:iplocation.io",
+          "domain:2ip.me",
+          "domain:myipinfo.io",
+          "domain:ifconfig.me",
+          "domain:chkip.info",
+          "domain:seranking.com",
+          "domain:whatismyip.org",
+          "domain:whoer.to",
+          "domain:ipcheck.ing",
+          "domain:whoer.net",
+          "domain:ipchecker.io",
+          "domain:ip.me",
+          "domain:whatismyip.net",
+          "domain:mxtoolbox.com",
+          "domain:smallseotools.com",
+          "domain:ipaddress.my",
+          "domain:top10vpn.com",
+          "domain:ipcost.com",
+          "domain:proxy-store.com",
+          "domain:checkserp.com",
+          "domain:showip.net",
+          "domain:mygeoip.org",
+          "domain:whatsmyip.com",
+          "domain:showmyip.com",
+          "domain:iphey.com",
+          "domain:appdevtools.com",
+          "domain:xmyip.com",
+          "domain:dnschecker.org",
+          "domain:checkip.me",
+          "domain:ipspeed.info",
+          "domain:internetometer.net"
+        ],
+        "type": "field",
+        "outboundTag": "WARP"
+      }
+    ]
+  }
+}
