@@ -69,15 +69,24 @@
 				    <li class="list-group-item d-flex justify-content-between align-items-center">
 						<a href="https://t.me/+LbpSG3rwSBQ2YjQ6" target="_blank" class="link-dark" rel="noopener noreferrer">Чат поддержки</a>
 				    </li>
-				    <li style="height: 45px;" class="list-group-item d-flex align-items-center">
-						<button style="padding: 0;" type="button" class="btn btn-link link-dark" onclick="copyToClipboard(window.location.href); showNotification('toast');">Скопировать подписку</button>
-						<div id="toast">Подписка скопирована</div>
-				    </li>
-				    <li class="list-group-item d-flex justify-content-between align-items-center">
-						<form class="form-check form-switch">
-						  <input class="form-check-input" type="checkbox" id="btnSwitchTheme">
-						  <label class="form-check-label" for="btnSwitchTheme">Тёмный режим</label>
-						</form>
+                                    <li style="height: 45px;" class="list-group-item d-flex align-items-center">
+                                                <button style="padding: 0;" type="button" class="btn btn-link link-dark" onclick="copySubscription(); showNotification('toast');">Скопировать подписку</button>
+                                                <div id="toast">Подписка скопирована</div>
+                                    </li>
+                                    <li class="list-group-item">
+                                                <div class="d-flex flex-column gap-2">
+                                                        <div class="small text-break">
+                                                                <span class="fw-semibold d-block">Ссылка подписки</span>
+                                                                <a id="subscription-link-display" data-subscription-url="{{ subscription_url | default(user.subscription_url, true) }}" class="link-dark text-break" target="_blank" rel="noopener noreferrer"></a>
+                                                        </div>
+                                                        <div id="raw-subscription-links" class="mt-2 d-flex flex-column gap-1"></div>
+                                                </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <form class="form-check form-switch">
+                                                  <input class="form-check-input" type="checkbox" id="btnSwitchTheme">
+                                                  <label class="form-check-label" for="btnSwitchTheme">Тёмный режим</label>
+                                                </form>
 				    </li>		
 				</ul>
 			</div>
@@ -86,182 +95,321 @@
 				<h3 class="module-title">Приложения</h3>
 				<div class="accordion accordion-flush" id="accordionApps">
 					<div class="accordion-item">
-					    <h2 class="accordion-header" id="flush-heading-apps-ios">
-					    	<button class="accordion-button collapsed lh0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-ios" aria-expanded="false" aria-controls="flush-collapse-apps-ios">IOS / macOS</button>
-					    </h2>
-					    <div id="flush-collapse-apps-ios" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-ios" data-bs-parent="#accordionApps">
-						     <div class="accordion-body">
-							    <h3>V2BOX</h3>
-							    V2BOX - рекомендуемое приложение для IOS 14+ и macOS 11.0+
-							    <div class="list-group list-group-flush">
-									<a href="https://apps.apple.com/ru/app/v2box-v2ray-client/id6446814690" target="_blank" class="link list-group-item list-group-item-action">
-										<span>Скачать в AppStore</span>
-									  	<div class="link-icon">
-									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									    </div>
-									</a>
-									<a id="linkFix" href="https://google.com" target="_blank" class="link list-group-item list-group-item-action">
-										<span>Добавить подписку</span>
-									  	<div class="link-icon">
-									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									    </div>
-									</a>
-
-									<!-- For some reason js code doesn't work on Safari. The only quick fix I know -->
-									<script>
-										var a = document.getElementById('linkFix');
-										a.href = "v2box://import/" + window.location.href + "#Title";
-									</script>
-
-									<a href="v2box://routes?multi=W3sicmVtYXJrIjoi8J+Ht/Cfh7ogUnV6b25lIiwiaXNFbmFibGUiOmZhbHNlLCJuYW1lIjoicm91dGUuN0U1M0U0ODUtNTQ0Ni00RTkwLTk4NjMtQUM2QzlCOTQ0MDA2IiwidHlwZSI6IkRvbWFpbiIsImxpc3RJUCI6W10sImxpc3QiOlsiLipcXC5ydSQiXSwidGFnIjoiZGlyZWN0IiwibWF0Y2hNb2RlIjoicmVnZXhwIn0seyJpc0VuYWJsZSI6dHJ1ZSwibGlzdCI6WyJnZW9zaXRlOmdvb2dsZSIsImdvb2dsZS5jb20iLCJnZW9zaXRlOnlvdXR1YmUiLCJ5b3V0dWJlIl0sImxpc3RJUCI6WyI2NC4yMzMuMTYwLjBcLzE5IiwiNzQuMTI1LjAuMFwvMTYiLCIxMDguMTc3LjAuMFwvMTciLCIxNDIuMjUwLjAuMFwvMTUiLCIxNzMuMTk0LjAuMFwvMTYiLCIxMDQuMTYuMC4wXC8xMiJdLCJyZW1hcmsiOiLwn5O5IEdvb2dsZSB8IFlvdXR1YmUiLCJ0YWciOiJwcm94eSIsIm1hdGNoTW9kZSI6ImtleXdvcmQiLCJ0eXBlIjoiSVAiLCJuYW1lIjoicm91dGUuQkY4NDdEMzYtMTA2NS00RTlELUI0MzgtQUVBOEI1NjYyQzQ5In0seyJsaXN0SVAiOltdLCJtYXRjaE1vZGUiOiJrZXl3b3JkIiwicmVtYXJrIjoi4pyN77iPIFdoYXRzQXBwIiwibGlzdCI6WyJnZW9zaXRlOndoYXRzYXBwIl0sImlzRW5hYmxlIjp0cnVlLCJ0eXBlIjoiRG9tYWluIiwidGFnIjoicHJveHkiLCJuYW1lIjoicm91dGUuNEQxQzYyRTktMDQzOC00ODI3LTg1MUQtMDg2QzRENDU5QkMwIn0seyJsaXN0IjpbXSwidHlwZSI6IklQIiwibmFtZSI6InJvdXRlLjUzQzMwMDM3LTM3ODMtNDBGNC04QTQ5LUZBODIzOTA1OTJEMCIsInJlbWFyayI6IuKchSBEaXJlY3QiLCJtYXRjaE1vZGUiOiJrZXl3b3JkIiwibGlzdElQIjpbIjAuMC4wLjBcLzAiLCJnZW9pcDpSVSIsImdlb2lwOmNuIl0sInRhZyI6ImRpcmVjdCIsImlzRW5hYmxlIjp0cnVlfSx7Imxpc3QiOlsiZ2Vvc2l0ZTpnb29nbGUtYWRzIiwiZ2Vvc2l0ZTpjYXRlZ29yeS1hZHMtYWxsIiwiYWR1a3dhaSIsIm1laXR1YW4gIiwicXEuY29tIiwiYmNlYm9zIiwia3VhaXNob3UiLCJhbmFseXRpY3MudHJveXdlbGwiLCJhZG1ldHJpY2EiLCJ5YW5kZXhhZGV4Y2hhbmdlIiwic3RhdGljLnRpbGRhY2RuLmNvbSIsInRoYi50aWxkYWNkbi5jb20iLCJicm93c2VyLnNlbnRyeS1jZG4iLCJhcHAuYWRqdXN0Lm5ldC5pbiIsInIubXJhZHgubmV0IiwibXMuYXBwbG92aW4uY29tIiwibWVkaWF0ZS1ldmVudHMiXSwiaXNFbmFibGUiOnRydWUsIm5hbWUiOiJyb3V0ZS40QTAxMDgyNi02NzRELTQzMjEtOEZDNS02RjBDMjZBMTZDMzIiLCJtYXRjaE1vZGUiOiJrZXl3b3JkIiwibGlzdElQIjpbXSwidGFnIjoiYmxvY2siLCJyZW1hcmsiOiLim5TvuI8gQmxvY2siLCJ0eXBlIjoiSVAifSx7ImlzRW5hYmxlIjp0cnVlLCJsaXN0SVAiOltdLCJ0eXBlIjoiRG9tYWluIiwibGlzdCI6WyJnZW9zaXRlOmluc3RhZ3JhbSJdLCJyZW1hcmsiOiLwn5O4IEluc3RhZ3JhbSIsInRhZyI6InByb3h5IiwibmFtZSI6InJvdXRlLjA5RjYwMTMyLUJFNTQtNEJEMy1BODMyLTBCMUE5MzZDMDM4RCIsIm1hdGNoTW9kZSI6ImtleXdvcmQifSx7ImlzRW5hYmxlIjp0cnVlLCJyZW1hcmsiOiLwn5qAIFNwZWVkdGVzdCIsInR5cGUiOiJEb21haW4iLCJtYXRjaE1vZGUiOiJrZXl3b3JkIiwibGlzdCI6WyJnZW9zaXRlOnNwZWVkdGVzdCJdLCJuYW1lIjoicm91dGUuQjJBQkIyREEtREM4QS00NjYxLTgyNEQtRDI3QzFDNzFFREU3IiwidGFnIjoicHJveHkiLCJsaXN0SVAiOltdfSx7InR5cGUiOiJJUCIsImxpc3QiOlsiZ2Vvc2l0ZTpmYWNlYm9vayIsImdlb3NpdGU6ZmFjZWJvb2stZGV2IiwiZ2VvaXA6ZmFjZWJvb2siXSwibWF0Y2hNb2RlIjoia2V5d29yZCIsImxpc3RJUCI6W10sImlzRW5hYmxlIjp0cnVlLCJyZW1hcmsiOiLwn5OYIEZhY2Vib29rIiwidGFnIjoicHJveHkiLCJuYW1lIjoicm91dGUuNjk3M0VDNjQtMTM2RS00NDI4LTlEMTEtNzBFQURCNDFGMzRFIn0seyJuYW1lIjoicm91dGUuMjY3RTRFQzctNTNFMi00RTAwLTlBRkEtMzNGMkY0MDRFQkNBIiwiaXNFbmFibGUiOnRydWUsImxpc3RJUCI6W10sInJlbWFyayI6IvCdlY8gVHdpdHRlciIsInRhZyI6InByb3h5IiwibGlzdCI6WyJnZW9zaXRlOnR3aXR0ZXIiLCJnZW9pcDp0d2l0dGVyIiwieC5jb20iXSwibWF0Y2hNb2RlIjoia2V5d29yZCIsInR5cGUiOiJEb21haW4ifV0=" target="_blank" class="link list-group-item list-group-item-action">
-										<span>Добавить роутинг</span>
-									  	<div class="link-icon">
-									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									    </div>
-									</a>
-								</div>
-								
-							    <div class="accordion-item">
-									<h2 class="accordion-header" id="flush-heading-instructions">
-										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-instructions" aria-expanded="false" aria-controls="flush-collapse-instructions">
-											<strong>Инструкция по подключению</strong>
-										</button>
-									</h2>
-									<div id="flush-collapse-instructions" class="accordion-collapse collapse" aria-labelledby="flush-heading-instructions">
-										<div class="accordion-body">
-											<p>1. Нажмите "Скачать в AppStore", чтобы установить приложение.</p>
-											<p>2. Нажмите "Добавить подписку".</p>
-											<p>3. Нажмите "Добавить роутинг".</p>
-											<p>4. Перейдите "Settings" - "Route Settings", нажмите "Enable Routing" и "Apply on Direct".</p>
-											<img class="img-fluid rounded img-help" src="https://i.postimg.cc/N09qf19s/v2box-7.jpg" alt="Шаг 9">
-											<p>5. Выберите страну подключения и сделайте слайд по иконке "Slide to Connect". Готово!</p>
-											<img class="img-fluid rounded img-help" src="https://i.postimg.cc/Bb3dgkhb/v2box-9.jpg" alt="Шаг 10">
-											<div class="list-group list-group-flush">
-												<a href="https://telegra.ph/Instrukciya-po-nastrojke-VPN-Vless-dlya-IOS-i-MacOS-V2BOX-09-18" class="link list-group-item list-group-item-action" target="_blank">
-													<strong>Подробная инструкция по настройке и подключению</strong>
-													  <div class="link-icon">
-														<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-													</div>
-												</a>								
-											</div>
+						<h2 class="accordion-header" id="flush-heading-apps-ios">
+							<button class="accordion-button collapsed lh0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-ios" aria-expanded="false" aria-controls="flush-collapse-apps-ios">iOS</button>
+						</h2>
+						<div id="flush-collapse-apps-ios" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-ios" data-bs-parent="#accordionApps">
+							<div class="accordion-body">
+								<h3>Happ</h3>
+								Happ — универсальный клиент для iOS.
+								<div class="list-group list-group-flush">
+									<a data-happ-link="ios.appStoreGlobal" target="_blank" class="link list-group-item list-group-item-action">
+										<span>Скачать в App Store (Global)</span>
+										<div class="link-icon">
+											<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 										</div>
-									</div>
-								</div>				
-							</div>
-					    </div>
-					 </div>
-				  	<div class="accordion-item">
-					    <h2 class="accordion-header" id="flush-heading-apps-android">
-					    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-android" aria-expanded="false" aria-controls="flush-collapse-apps-android">Android</button>
-					    </h2>
-					    <div id="flush-collapse-apps-android" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-android" data-bs-parent="#accordionApps">
-					    	<div class="accordion-body">
-							    <h3>v2rayNG</h3>
-							    v2rayNG - рекомендуемое приложение для Android
-
-							    <div class="list-group list-group-flush">
-									<a href="https://play.google.com/store/apps/details?id=com.v2ray.ang" class="link list-group-item list-group-item-action" target="_blank">
-										<span>Скачать в Google Play</span>
-									  	<div class="link-icon">
-									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									    </div>
 									</a>
-									<div class="list-group list-group-flush">
-									<a href="https://getv2rayng.com/wp-content/uploads/2023/10/v2rayNG_1.8.5.apk" class="link list-group-item list-group-item-action" target="_blank">
-											<span>Скачать в альтернативном источнике</span>
-											  <div class="link-icon">
-												<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-											</div>
+									<a data-happ-link="ios.appStoreRu" target="_blank" class="link list-group-item list-group-item-action">
+										<span>Скачать в App Store (RU)</span>
+										<div class="link-icon">
+											<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+										</div>
 									</a>
-									<a href="v2rayng://install-config?url={link}&name=Title" target="_blank" class="self-link link list-group-item list-group-item-action">
+									<a data-happ-link="ios.testflightGlobal" target="_blank" class="link list-group-item list-group-item-action">
+										<span>TestFlight (Global)</span>
+										<div class="link-icon">
+											<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+										</div>
+									</a>
+									<a data-happ-link="ios.testflightRu" target="_blank" class="link list-group-item list-group-item-action">
+										<span>TestFlight (RU)</span>
+										<div class="link-icon">
+											<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+										</div>
+									</a>
+									<a href="#" class="link list-group-item list-group-item-action happ-add-link" target="_blank">
 										<span>Добавить подписку</span>
-									  	<div class="link-icon">
-									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									    </div>
+										<div class="link-icon">
+											<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+										</div>
 									</a>
-								</div>
+									<a href="#" class="link list-group-item list-group-item-action happ-crypto-link" target="_blank">
+										<span>Добавить подписку (crypto)</span>
+										<div class="link-icon">
+											<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+										</div>
+									</a>
+									<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
+										<span>Добавить роутинг (рекомендуется)</span>
+										<div class="link-icon">
+											<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+										</div>
+									</a>
 							</div>
-								
-							    <div class="accordion-item">
-									<h2 class="accordion-header" id="flush-heading-instructions">
-										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-instructions" aria-expanded="false" aria-controls="flush-collapse-instructions">
-											<strong>Инструкция по подключению</strong>
-										</button>
-									</h2>
-									<div id="flush-collapse-instructions" class="accordion-collapse collapse" aria-labelledby="flush-heading-instructions">
-										<div class="accordion-body">
-								    <p>1. Нажмите Скачать в Google Play, чтобы установить приложение.</p>
-								    <p>2. Нажмите "Добавить подписку".</p>
-								    <p>3. Нажмите на три вертикальных точки <img class="float-start img-fluid rounded img-help" src="https://raw.githubusercontent.com/x0sina/marzban-sub/main/1.jpg"></p><p>и выберите Обновить подписку. <img class="float-end img-fluid rounded img-help" src="https://raw.githubusercontent.com/x0sina/marzban-sub/main/2.jpg"></p>
-								    <p>4. Теперь осталось выбрать страну и подключиться, нажав на иконку приложения в правом нижнем углу. Готово! <img class="img-fluid rounded img-help" src="https://i.postimg.cc/wvtzNx85/v2rayng-7.jpg"></p>
-									<div class="list-group list-group-flush">
-									<a href="https://telegra.ph/Instrukciya-po-nastrojke-VPN-Vless-dlya-Android-v2rayng-09-18" class="link list-group-item list-group-item-action" target="_blank">
-										<strong>Подробная инструкция по настройке и подключению</strong>
-									  	<div class="link-icon">
-									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									    </div>
-									</a>								
-								</div>
-							</div>
-						</div>				
-					</div>
-				</div>
-			 </div>
-		</div>
-					 <div class="accordion-item">
-					    <h2 class="accordion-header" id="flush-heading-apps-windows">
-					    	<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-windows" aria-expanded="false" aria-controls="flush-collapse-apps-windows">Windows</button>
-					    </h2>
-					    <div id="flush-collapse-apps-windows" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-windows" data-bs-parent="#accordionApps">
-					    	<div class="accordion-body">
-							    <h3>Nekoray</h3>
-							    Nekoray - рекомендуемое приложение для Windows
 
-							    <div class="list-group list-group-flush">
-									<a href="https://github.com/MatsuriDayo/nekoray/releases/download/3.26/nekoray-3.26-2023-12-09-windows64.zip" target="_blank" class="link list-group-item list-group-item-action">
-										<span>Скачать с GitHub</span>
-									  	<div class="link-icon">
-									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									    </div>
-									</a>									
-								</div>
-								
-							    <div class="accordion-item">
-									<h2 class="accordion-header" id="flush-heading-instructions">
-										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-instructions" aria-expanded="false" aria-controls="flush-collapse-instructions">
-											<strong>Инструкция по подключению</strong>
-										</button>
-									</h2>
-									<div id="flush-collapse-instructions" class="accordion-collapse collapse" aria-labelledby="flush-heading-instructions">
-										<div class="accordion-body">
-								    <p>1. Нажмите Скачать с GitHub, чтобы установить приложение</p>
-								    <p>2. После загрузки клиента на ваш ПК распакуйте его в любую удобную вам директорию и откройте содержимое папки nekoray. Запустите от имени администратора файл "nekoray.exe"
-									<img class="img-fluid rounded img-help" src="https://i.postimg.cc/QdtHh1jB/nekoray-2.png"></p>
-								    <p>3. При первом запуске выберите ядро "sing-box"
-									<img class="img-fluid rounded img-help" src="https://i.postimg.cc/1RGgHyWz/nekoray-3.jpg"></p>
-								    <p>4. Скопируйте подписку и добавьте ее в приложение. 
-										>Сервер >Добавить профиль из буфера обмена
-									<img class="img-fluid rounded img-help" src="https://i.postimg.cc/qMQzPjHV/nekoray-4.jpg"></p>
-									<p>5. Для корректной работы приложения активируйте "галочкой" режим системного прокси
-									<img class="img-fluid rounded img-help" src="https://i.postimg.cc/9QnzM0fL/nekoray-6.png"></p>
-									<p>6. Выберите сервер с нужной локацией, кликните правой кнопкой мыши и нажмите запустить
-									<img class="img-fluid rounded img-help" src="https://i.postimg.cc/cHQJXcBz/nekoray-9.png"></p>
-									<div class="list-group list-group-flush">
-										<a href="https://telegra.ph/Instrukciya-po-podklyucheniyu-VPN-Vless-dlya-PK-nekoray-09-18" class="link list-group-item list-group-item-action" target="_blank">
-											<strong>Подробная инструкция по настройке и подключению</strong>
-											  <div class="link-icon">
-												<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-											</div>
-										</a>								
-									</div>
+							<div class="instructions">
+								<h6 class="instructions-title">Инструкция по подключению</h6>
+								<ol class="ps-3 mb-0">
+									<li>Откройте Happ.</li>
+									<li>Нажмите «+» в правом верхнем углу и выберите «Подписка / Subscription».</li>
+									<li>Вставьте ссылку подписки или отсканируйте QR-код со страницы.</li>
+									<li>Сохраните профиль и выберите его в списке.</li>
+									<li>Нажмите «Подключиться» для старта VPN.</li>
+								</ol>
+								<div class="mt-3 d-flex flex-column gap-2">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-ios-step1.png" alt="Happ iOS шаг 1">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-ios-step2.png" alt="Happ iOS шаг 2">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-ios-step3.png" alt="Happ iOS шаг 3">
 								</div>
 							</div>
-						</div>				
+						</div>
+				 </div>
+				</div>
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-heading-apps-android">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-android" aria-expanded="false" aria-controls="flush-collapse-apps-android">Android</button>
+					</h2>
+					<div id="flush-collapse-apps-android" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-android" data-bs-parent="#accordionApps">
+						<div class="accordion-body">
+							<h3>Happ</h3>
+							Happ — рекомендуемое приложение для Android.
+
+							<div class="list-group list-group-flush">
+								<a data-happ-link="android.googlePlay" class="link list-group-item list-group-item-action" target="_blank">
+									<span>Google Play</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a data-happ-link="android.apk" class="link list-group-item list-group-item-action" target="_blank">
+									<span>Скачать APK</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a data-happ-link="android.betaApk" class="link list-group-item list-group-item-action" target="_blank">
+									<span>Скачать Beta APK</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a href="#" target="_blank" class="self-link link list-group-item list-group-item-action happ-add-link">
+									<span>Добавить подписку</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a href="#" class="link list-group-item list-group-item-action happ-crypto-link" target="_blank">
+									<span>Добавить подписку (crypto)</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
+									<span>Добавить роутинг (рекомендуется)</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+							</div>
+
+							<div class="instructions">
+								<h6 class="instructions-title">Инструкция по подключению</h6>
+								<ol class="ps-3 mb-0">
+									<li>Откройте Happ.</li>
+									<li>Нажмите «+» и выберите «Подписка / Subscription».</li>
+									<li>Вставьте ссылку подписки с этой страницы или отсканируйте QR-код.</li>
+									<li>Сохраните профиль и выберите его в списке.</li>
+									<li>Нажмите «Подключиться».</li>
+								</ol>
+								<div class="mt-3 d-flex flex-column gap-2">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-android-step1.png" alt="Happ Android шаг 1">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-android-step2.png" alt="Happ Android шаг 2">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-android-step3.png" alt="Happ Android шаг 3">
+								</div>
+							</div>
+						</div>
+					</div>
+				 </div>
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-heading-apps-windows">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-windows" aria-expanded="false" aria-controls="flush-collapse-apps-windows">Windows</button>
+					</h2>
+					<div id="flush-collapse-apps-windows" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-windows" data-bs-parent="#accordionApps">
+						<div class="accordion-body">
+							<h3>Happ</h3>
+							Happ — рекомендуемое приложение для Windows.
+
+							<div class="list-group list-group-flush">
+								<a data-happ-link="windows.alpha" target="_blank" class="link list-group-item list-group-item-action">
+									<span>Скачать Happ для Windows</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a href="#" class="self-link link list-group-item list-group-item-action happ-add-link" target="_blank">
+									<span>Добавить подписку</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a href="#" class="link list-group-item list-group-item-action happ-crypto-link" target="_blank">
+									<span>Добавить подписку (crypto)</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
+									<span>Добавить роутинг (рекомендуется)</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+							</div>
+
+							<div class="instructions">
+								<h6 class="instructions-title">Инструкция по подключению</h6>
+								<ol class="ps-3 mb-0">
+									<li>Установите Happ и запустите приложение.</li>
+									<li>Нажмите «+» и выберите добавление подписки.</li>
+									<li>Вставьте ссылку подписки или отсканируйте QR-код.</li>
+									<li>Сохраните профиль и откройте его.</li>
+									<li>Нажмите «Подключиться».</li>
+								</ol>
+								<div class="mt-3 d-flex flex-column gap-2">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-windows-step1.png" alt="Happ Windows шаг 1">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-windows-step2.png" alt="Happ Windows шаг 2">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-windows-step3.png" alt="Happ Windows шаг 3">
+								</div>
+							</div>
+						</div>
+					</div>
+				 </div>
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-heading-apps-macos">
+						<button class="accordion-button collapsed lh0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-macos" aria-expanded="false" aria-controls="flush-collapse-apps-macos">macOS</button>
+					</h2>
+					<div id="flush-collapse-apps-macos" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-macos" data-bs-parent="#accordionApps">
+						<div class="accordion-body">
+							<h3>Happ</h3>
+							Happ — рекомендуемое приложение для macOS.
+							<div class="list-group list-group-flush">
+								<a data-happ-link="macos.appStoreGlobal" target="_blank" class="link list-group-item list-group-item-action">
+									<span>Скачать в App Store (Global)</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a data-happ-link="macos.appStoreRu" target="_blank" class="link list-group-item list-group-item-action">
+									<span>Скачать в App Store (RU)</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a data-happ-link="macos.testflightGlobal" target="_blank" class="link list-group-item list-group-item-action">
+									<span>TestFlight (Global)</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a data-happ-link="macos.testflightRu" target="_blank" class="link list-group-item list-group-item-action">
+									<span>TestFlight (RU)</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a href="#" class="link list-group-item list-group-item-action happ-add-link" target="_blank">
+									<span>Добавить подписку</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a href="#" class="link list-group-item list-group-item-action happ-crypto-link" target="_blank">
+									<span>Добавить подписку (crypto)</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
+									<span>Добавить роутинг (рекомендуется)</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+							</div>
+
+							<div class="instructions">
+								<h6 class="instructions-title">Инструкция по подключению</h6>
+								<ol class="ps-3 mb-0">
+									<li>Установите Happ из App Store или TestFlight.</li>
+									<li>Откройте приложение и нажмите «+».</li>
+									<li>Выберите добавление подписки и вставьте ссылку.</li>
+									<li>Сохраните профиль и включите соединение.</li>
+									<li>Убедитесь, что выбран нужный маршрут и нажмите «Connect».</li>
+								</ol>
+								<div class="mt-3 d-flex flex-column gap-2">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-macos-step1.png" alt="Happ macOS шаг 1">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-macos-step2.png" alt="Happ macOS шаг 2">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-macos-step3.png" alt="Happ macOS шаг 3">
+								</div>
+							</div>
+						</div>
+					</div>
+				 </div>
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-heading-apps-linux">
+						<button class="accordion-button collapsed lh0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-linux" aria-expanded="false" aria-controls="flush-collapse-apps-linux">Linux</button>
+					</h2>
+					<div id="flush-collapse-apps-linux" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-linux" data-bs-parent="#accordionApps">
+						<div class="accordion-body">
+							<h3>Happ</h3>
+							Happ — рекомендуемое приложение для Linux.
+							<div class="list-group list-group-flush">
+								<a data-happ-link="linux.alpha" target="_blank" class="link list-group-item list-group-item-action">
+									<span>Скачать Happ для Linux</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a href="#" class="link list-group-item list-group-item-action happ-add-link" target="_blank">
+									<span>Добавить подписку</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a href="#" class="link list-group-item list-group-item-action happ-crypto-link" target="_blank">
+									<span>Добавить подписку (crypto)</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+								<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
+									<span>Добавить роутинг (рекомендуется)</span>
+									<div class="link-icon">
+										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+									</div>
+								</a>
+							</div>
+
+							<div class="instructions">
+								<h6 class="instructions-title">Инструкция по подключению</h6>
+								<ol class="ps-3 mb-0">
+									<li>Скачайте пакет Happ для вашей системы и установите его.</li>
+									<li>Запустите приложение и нажмите «+».</li>
+									<li>Выберите добавление подписки и вставьте ссылку с этой страницы.</li>
+									<li>Сохраните изменения и выберите созданный профиль.</li>
+									<li>Нажмите «Подключиться».</li>
+								</ol>
+								<div class="mt-3 d-flex flex-column gap-2">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-linux-step1.png" alt="Happ Linux шаг 1">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-linux-step2.png" alt="Happ Linux шаг 2">
+									<img class="img-fluid rounded img-help" src="assets/happ/happ-linux-step3.png" alt="Happ Linux шаг 3">
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-			 </div>
-		</div>
-			
+				</div>
 			<div class="module">
 				<h3 class="module-title">Помощь</h3>
 				<div class="accordion accordion-flush" id="accordionHelp">
@@ -491,31 +639,187 @@
 
 	</style>
 
-	<script type="text/javascript">
+        <script type="text/javascript">
 
-		function showNotification(notificationElementId) {
-		  	let notification = document.getElementById(notificationElementId)
-		    notification.className = "show";
-		    setTimeout(() => { 
-		    	notification.className = notification.className.replace("show", ""); 
-		    }, 2900);
-		}
-		
-		function copyToClipboard(text) {
-			navigator.clipboard.writeText(text);
-		}
+                const HAPP_LINKS = {
+                        ios: {
+                                appStoreGlobal: 'https://apps.apple.com/app/happ-proxy-utility/id6504287215',
+                                appStoreRu: 'https://apps.apple.com/ru/app/happ-proxy-utility/id6504287215',
+                                testflightGlobal: 'https://www.happ.su/main/ru#testflight-global',
+                                testflightRu: 'https://www.happ.su/main/ru#testflight-ru'
+                        },
+                        android: {
+                                googlePlay: 'https://play.google.com/store/apps/details?id=com.happproxy',
+                                apk: 'https://www.happ.su/main/ru#android-apk',
+                                betaApk: 'https://www.happ.su/main/ru#android-beta-apk'
+                        },
+                        windows: {
+                                alpha: 'https://www.happ.su/main/ru#windows-alpha'
+                        },
+                        macos: {
+                                appStoreGlobal: 'https://apps.apple.com/app/happ-proxy-utility/id6504287215',
+                                appStoreRu: 'https://apps.apple.com/ru/app/happ-proxy-utility/id6504287215',
+                                testflightGlobal: 'https://www.happ.su/main/ru#macos-testflight-global',
+                                testflightRu: 'https://www.happ.su/main/ru#macos-testflight-ru'
+                        },
+                        linux: {
+                                alpha: 'https://www.happ.su/main/ru#linux-alpha'
+                        }
+                };
 
-		const buttonSwitchTheme = document.getElementById('btnSwitchTheme');
-		buttonSwitchTheme.checked = currentThemeSetting === 'dark';
-		buttonSwitchTheme.addEventListener("click", () => {
-			  const newTheme = currentThemeSetting === "dark" ? "light" : "dark";
-			  setTheme(newTheme);			  
-		});
+                const HAPP_ROUTING_LINK = 'happ://routing/add/ewogICAgIk5hbWUiOiAiUlUiLAogICAgIkdsb2JhbFByb3h5IjogInRydWUiLAogICAgIlVzZUNodW5rRmlsZXMiOiAidHJ1ZSIsCiAgICAiUmVtb3RlRE5TVHlwZSI6ICJEb1UiLAogICAgIlJlbW90ZU5TRG9tYWluIjogIiIsCiAgICAiUmVtb3RlTlNESGlQIjogIjguOC44LjgiLAogICAgIkRvbWVzdGljRE5TVHlwZSI6ICJEb1UiLAogICAgIkRvbWVzdGljRE5TRG9tYWluIjogIiIsCiAgICAiRG9tZXN0aWNETlNJUCI6ICI3Ny44OC44LjgiLAogICAgIkdlb2lwdXJsIjogIiIsCiAgICAiR2Vvc2l0ZXVybCI6ICIiLAogICAgIkxhc3RVcGRhdGVkIjogIiIsCiAgICAiRG5zSG9zdHMiOiB7fSwKICAgICJEaXJlY3RTaXRlcyI6IFsKICAgICAgICAiZ2Vvc2l0ZTpydSIsCiAgICAgICAgImdlb3NpdGU6Z2VvbG9jYXRpb24tcnUiCiAgICBdLAogICAgIkRpcmVjdElwIjogWwogICAgICAgICJnZW9pcDpydSIKICAgIF0sCiAgICAiUHJveHlTaXRlcyI6IFtdLAogICAgIlByb3h5SXAiOiBbXSwKICAgICJCbG9ja1NpdGVzIjogWwogICAgICAgICJnZW9zaXRlOmNhdGVnb3J5LWFkcy1hbGwiCiAgICBdLAogICAgIkJsb2NrSXAiOiBbXSwKICAgICJEb21haW5TdHJhdGVneSI6ICJJUElmTm9uTWF0Y2giLAogICAgIkZha2VETlMiOiAiZmFsc2UiCn0=';
 
-		const links = document.getElementsByClassName('self-link');
-		Array.from(links).forEach(link => {
-			link.href = link.href.replace('{link}', window.location.href);
-		});
+                function showNotification(notificationElementId) {
+                        let notification = document.getElementById(notificationElementId)
+                    notification.className = "show";
+                    setTimeout(() => {
+                        notification.className = notification.className.replace("show", "");
+                    }, 2900);
+                }
 
-	</script>
+                function getSubscriptionUrl() {
+                        const el = document.querySelector('[data-subscription-url]');
+                        if (!el) return null;
+                        return (el.dataset.subscriptionUrl || '').trim();
+                }
+
+                function copyToClipboard(text) {
+                        navigator.clipboard.writeText(text);
+                }
+
+                function copySubscription() {
+                        const subUrl = getSubscriptionUrl();
+                        if (!subUrl) return;
+                        copyToClipboard(subUrl);
+                }
+
+                async function loadSubscriptionLinks(subUrl) {
+                        const resp = await fetch(subUrl);
+                        const text = await resp.text();
+                        return text
+                                .split('\n')
+                                .map(l => l.trim())
+                                .filter(Boolean);
+                }
+
+                async function renderRawSubscriptionLinks() {
+                        const subUrl = getSubscriptionUrl();
+                        if (!subUrl) return;
+
+                        const container = document.getElementById('raw-subscription-links');
+                        if (!container) return;
+
+                        try {
+                                const links = await loadSubscriptionLinks(subUrl);
+                                links.forEach(link => {
+                                        const line = document.createElement('div');
+                                        line.className = 'text-break small border rounded px-2 py-1';
+                                        line.style.cursor = 'pointer';
+                                        line.title = 'Кликните, чтобы скопировать конфиг';
+                                        line.textContent = link;
+                                        line.addEventListener('click', () => copyToClipboard(link));
+                                        container.appendChild(line);
+                                });
+                        } catch (e) {
+                                console.error(e);
+                        }
+                }
+
+                async function getCryptoSub(subUrl) {
+                        const resp = await fetch('https://crypto.happ.su/api.php', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ url: subUrl }),
+                        });
+
+                        const text = await resp.text();
+
+                        try {
+                                const json = JSON.parse(text);
+                                const val = json.result || json.url || json.data;
+                                return (val || '').trim();
+                        } catch {
+                                return text.trim();
+                        }
+                }
+
+                function resolveHappLink(path) {
+                        return path.split('.').reduce((acc, key) => (acc && acc[key] ? acc[key] : null), HAPP_LINKS);
+                }
+
+                const buttonSwitchTheme = document.getElementById('btnSwitchTheme');
+                buttonSwitchTheme.checked = currentThemeSetting === 'dark';
+                buttonSwitchTheme.addEventListener("click", () => {
+                          const newTheme = currentThemeSetting === "dark" ? "light" : "dark";
+                          setTheme(newTheme);
+                });
+
+                (function () {
+                        const subUrl = getSubscriptionUrl();
+                        const subscriptionDisplay = document.getElementById('subscription-link-display');
+                        if (subscriptionDisplay) {
+                                if (subUrl) {
+                                        subscriptionDisplay.textContent = subUrl;
+                                        subscriptionDisplay.href = subUrl;
+                                } else {
+                                        subscriptionDisplay.textContent = 'Ссылка подписки недоступна';
+                                }
+                        }
+
+                        document.querySelectorAll('[data-happ-link]').forEach(anchor => {
+                                const href = resolveHappLink(anchor.dataset.happLink || '');
+                                if (href) {
+                                        anchor.href = href;
+                                } else {
+                                        anchor.classList.add('disabled');
+                                        anchor.setAttribute('aria-disabled', 'true');
+                                }
+                        });
+
+                        const addLink = subUrl ? `happ://add/${encodeURIComponent(subUrl)}` : null;
+                        document.querySelectorAll('.happ-add-link').forEach(anchor => {
+                                if (addLink) {
+                                        anchor.href = addLink;
+                                } else {
+                                        anchor.classList.add('disabled');
+                                        anchor.setAttribute('aria-disabled', 'true');
+                                }
+                        });
+
+                        document.querySelectorAll('.happ-routing-link').forEach(anchor => {
+                                anchor.href = HAPP_ROUTING_LINK;
+                        });
+
+                        document.querySelectorAll('.happ-crypto-link').forEach(anchor => {
+                                anchor.addEventListener('click', async (event) => {
+                                        if (anchor.dataset.ready === '1') {
+                                                return;
+                                        }
+
+                                        const subscriptionUrl = getSubscriptionUrl();
+                                        if (!subscriptionUrl) {
+                                                event.preventDefault();
+                                                return;
+                                        }
+
+                                        event.preventDefault();
+                                        try {
+                                                const crypto = await getCryptoSub(subscriptionUrl);
+                                                if (crypto) {
+                                                        anchor.href = `happ://crypt3/${encodeURIComponent(crypto)}`;
+                                                        anchor.dataset.ready = '1';
+                                                        window.location.href = anchor.href;
+                                                }
+                                        } catch (err) {
+                                                console.error(err);
+                                        }
+                                });
+                        });
+
+                        if (subUrl) {
+                                renderRawSubscriptionLinks();
+                        }
+                })();
+
+        </script>
 </html>
