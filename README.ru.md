@@ -84,8 +84,8 @@ sudo marzban restart
 Простой вариант: поменять значения по умолчанию прямо в шаблоне:
 
 ```jinja2
-{% set TELEGRAM_CHANNEL_URL = 'https://t.me/swiftlessvpn' %}
-{% set TELEGRAM_SUPPORT_URL = 'https://t.me/swiftlessvpn_support' %}
+{% set TELEGRAM_CHANNEL_URL = 'https://t.me/your_channel_here' %}
+{% set TELEGRAM_SUPPORT_URL = 'https://t.me/your_support_chat_here' %}
 ```
 
 Эти переменные используются в блоке «Подписка» для ссылок:
