@@ -1,4 +1,4 @@
-# Marzban Subscription Page (SwiftlessVPN Edition)
+# Marzban Subscription Page (indie-master Edition)
 
 Custom subscription page template for [Marzban](https://github.com/Gozargah/Marzban), focused on:
 

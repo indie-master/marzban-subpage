@@ -1,4 +1,4 @@
-# Шаблон страницы подписки для Marzban (SwiftlessVPN)
+# Шаблон страницы подписки для Marzban (indie-master Edition)
 
 Кастомная страница подписки для панели [Marzban](https://github.com/Gozargah/Marzban):
 
