@@ -45,6 +45,9 @@
 </head>
 <body>
 
+        {% set TELEGRAM_CHANNEL_URL = TELEGRAM_CHANNEL_URL | default('https://t.me/your_channel_here') %}
+        {% set TELEGRAM_SUPPORT_URL = TELEGRAM_SUPPORT_URL | default('https://t.me/your_support_chat_here') %}
+
 	<!-- <header>
 		<h1><img id="logo" src="/www/logo.png">Logo</h1>
 	</header> -->
@@ -63,12 +66,12 @@
 				    <li class="list-group-item d-flex justify-content-between align-items-center">
 				    	Истекает<span id="expire"></span><script>document.getElementById('expire').innerHTML = expireDateVar</script>
 				    </li>
-				    <li class="list-group-item d-flex justify-content-between align-items-center">
-						<a href="https://t.me/swiftlessvpn" target="_blank" class="link-dark" rel="noopener noreferrer">Телеграм канал</a>
-				    </li>
-				    <li class="list-group-item d-flex justify-content-between align-items-center">
-						<a href="https://t.me/+LbpSG3rwSBQ2YjQ6" target="_blank" class="link-dark" rel="noopener noreferrer">Чат поддержки</a>
-				    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <a href="{{ TELEGRAM_CHANNEL_URL }}" target="_blank" class="link-dark" rel="noopener noreferrer">Телеграм канал</a>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <a href="{{ TELEGRAM_SUPPORT_URL }}" target="_blank" class="link-dark" rel="noopener noreferrer">Чат поддержки</a>
+                                    </li>
                                     <li style="height: 45px;" class="list-group-item d-flex align-items-center">
                                                 <button style="padding: 0;" type="button" class="btn btn-link link-dark" onclick="copySubscription(); showNotification('toast');">Скопировать подписку</button>
                                                 <div id="toast">Подписка скопирована</div>
@@ -77,10 +80,32 @@
                                                 <div class="d-flex flex-column gap-2">
                                                         <div class="small text-break">
                                                                 <span class="fw-semibold d-block">Ссылка подписки</span>
-                                                                <a id="subscription-link-display" data-subscription-url="{{ subscription_url | default(user.subscription_url, true) }}" class="link-dark text-break" target="_blank" rel="noopener noreferrer"></a>
+                                                                <a id="subscriptionMainLink"
+                                                                   data-subscription-url="{{ subscription_url | default(user.subscription_url, true) }}"
+                                                                   href="{{ subscription_url | default(user.subscription_url, true) }}"
+                                                                   target="_blank"
+                                                                   class="link-dark text-break"
+                                                                   rel="noopener noreferrer">
+                                                                  {{ subscription_url | default(user.subscription_url, true) }}
+                                                                </a>
                                                         </div>
-                                                        <div id="raw-subscription-links" class="mt-2 d-flex flex-column gap-1"></div>
-                                                </div>
+                                                        <div class="mt-3">
+                                                          <button class="btn btn-outline-secondary btn-sm"
+                                                                  type="button"
+                                                                  data-bs-toggle="collapse"
+                                                                  data-bs-target="#subscriptionLinksCollapse"
+                                                                  aria-expanded="false"
+                                                                  aria-controls="subscriptionLinksCollapse">
+                                                            Показать конфиги из подписки
+                                                          </button>
+
+                                                          <div class="collapse mt-2" id="subscriptionLinksCollapse">
+                                                            <div id="subscriptionLinksContainer"
+                                                                 class="list-group small">
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                    </div>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 <form class="form-check form-switch">
@@ -133,12 +158,6 @@
 											<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 										</div>
 									</a>
-									<a href="#" class="link list-group-item list-group-item-action happ-crypto-link" target="_blank">
-										<span>Добавить подписку (crypto)</span>
-										<div class="link-icon">
-											<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-										</div>
-									</a>
 									<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
 										<span>Добавить роутинг (рекомендуется)</span>
 										<div class="link-icon">
@@ -147,21 +166,44 @@
 									</a>
 							</div>
 
-							<div class="instructions">
-								<h6 class="instructions-title">Инструкция по подключению</h6>
-								<ol class="ps-3 mb-0">
-									<li>Откройте Happ.</li>
-									<li>Нажмите «+» в правом верхнем углу и выберите «Подписка / Subscription».</li>
-									<li>Вставьте ссылку подписки или отсканируйте QR-код со страницы.</li>
-									<li>Сохраните профиль и выберите его в списке.</li>
-									<li>Нажмите «Подключиться» для старта VPN.</li>
-								</ol>
-								<div class="mt-3 d-flex flex-column gap-2">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-ios-step1.png" alt="Happ iOS шаг 1">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-ios-step2.png" alt="Happ iOS шаг 2">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-ios-step3.png" alt="Happ iOS шаг 3">
-								</div>
-							</div>
+                                                        <div class="instructions">
+                                                                <h5 class="mb-3">Пошаговая инструкция</h5>
+                                                                <div class="row g-3">
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/ios-step1.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ iOS шаг 1"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 1. Откройте Happ и нажмите «Добавить подписку».
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/ios-step2.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ iOS шаг 2"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 2. Вставьте ссылку подписки и подтвердите.
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/ios-step3.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ iOS шаг 3"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 3. Включите нужный профиль и проверьте подключение.
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
 						</div>
 				 </div>
 				</div>
@@ -199,12 +241,6 @@
 										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 									</div>
 								</a>
-								<a href="#" class="link list-group-item list-group-item-action happ-crypto-link" target="_blank">
-									<span>Добавить подписку (crypto)</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
 								<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
 									<span>Добавить роутинг (рекомендуется)</span>
 									<div class="link-icon">
@@ -213,21 +249,44 @@
 								</a>
 							</div>
 
-							<div class="instructions">
-								<h6 class="instructions-title">Инструкция по подключению</h6>
-								<ol class="ps-3 mb-0">
-									<li>Откройте Happ.</li>
-									<li>Нажмите «+» и выберите «Подписка / Subscription».</li>
-									<li>Вставьте ссылку подписки с этой страницы или отсканируйте QR-код.</li>
-									<li>Сохраните профиль и выберите его в списке.</li>
-									<li>Нажмите «Подключиться».</li>
-								</ol>
-								<div class="mt-3 d-flex flex-column gap-2">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-android-step1.png" alt="Happ Android шаг 1">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-android-step2.png" alt="Happ Android шаг 2">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-android-step3.png" alt="Happ Android шаг 3">
-								</div>
-							</div>
+                                                        <div class="instructions">
+                                                                <h5 class="mb-3">Пошаговая инструкция</h5>
+                                                                <div class="row g-3">
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/android-step1.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ Android шаг 1"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 1. Откройте Happ и нажмите «+».
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/android-step2.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ Android шаг 2"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 2. Выберите «Подписка» и вставьте ссылку.
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/android-step3.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ Android шаг 3"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 3. Сохраните профиль и подключитесь.
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
 						</div>
 					</div>
 				 </div>
@@ -253,12 +312,6 @@
 										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 									</div>
 								</a>
-								<a href="#" class="link list-group-item list-group-item-action happ-crypto-link" target="_blank">
-									<span>Добавить подписку (crypto)</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
 								<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
 									<span>Добавить роутинг (рекомендуется)</span>
 									<div class="link-icon">
@@ -267,21 +320,44 @@
 								</a>
 							</div>
 
-							<div class="instructions">
-								<h6 class="instructions-title">Инструкция по подключению</h6>
-								<ol class="ps-3 mb-0">
-									<li>Установите Happ и запустите приложение.</li>
-									<li>Нажмите «+» и выберите добавление подписки.</li>
-									<li>Вставьте ссылку подписки или отсканируйте QR-код.</li>
-									<li>Сохраните профиль и откройте его.</li>
-									<li>Нажмите «Подключиться».</li>
-								</ol>
-								<div class="mt-3 d-flex flex-column gap-2">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-windows-step1.png" alt="Happ Windows шаг 1">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-windows-step2.png" alt="Happ Windows шаг 2">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-windows-step3.png" alt="Happ Windows шаг 3">
-								</div>
-							</div>
+                                                        <div class="instructions">
+                                                                <h5 class="mb-3">Пошаговая инструкция</h5>
+                                                                <div class="row g-3">
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/windows-step1.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ Windows шаг 1"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 1. Установите Happ и откройте приложение.
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/windows-step2.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ Windows шаг 2"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 2. Нажмите «+», выберите «Подписка» и вставьте ссылку.
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/windows-step3.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ Windows шаг 3"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 3. Сохраните профиль и нажмите «Подключиться».
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
 						</div>
 					</div>
 				 </div>
@@ -324,12 +400,6 @@
 										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 									</div>
 								</a>
-								<a href="#" class="link list-group-item list-group-item-action happ-crypto-link" target="_blank">
-									<span>Добавить подписку (crypto)</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
 								<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
 									<span>Добавить роутинг (рекомендуется)</span>
 									<div class="link-icon">
@@ -338,21 +408,44 @@
 								</a>
 							</div>
 
-							<div class="instructions">
-								<h6 class="instructions-title">Инструкция по подключению</h6>
-								<ol class="ps-3 mb-0">
-									<li>Установите Happ из App Store или TestFlight.</li>
-									<li>Откройте приложение и нажмите «+».</li>
-									<li>Выберите добавление подписки и вставьте ссылку.</li>
-									<li>Сохраните профиль и включите соединение.</li>
-									<li>Убедитесь, что выбран нужный маршрут и нажмите «Connect».</li>
-								</ol>
-								<div class="mt-3 d-flex flex-column gap-2">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-macos-step1.png" alt="Happ macOS шаг 1">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-macos-step2.png" alt="Happ macOS шаг 2">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-macos-step3.png" alt="Happ macOS шаг 3">
-								</div>
-							</div>
+                                                        <div class="instructions">
+                                                                <h5 class="mb-3">Пошаговая инструкция</h5>
+                                                                <div class="row g-3">
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/macos-step1.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ macOS шаг 1"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 1. Установите Happ и нажмите «+».
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/macos-step2.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ macOS шаг 2"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 2. Выберите «Подписка» и вставьте ссылку.
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/macos-step3.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ macOS шаг 3"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 3. Активируйте профиль и проверьте соединение.
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
 						</div>
 					</div>
 				 </div>
@@ -377,12 +470,6 @@
 										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 									</div>
 								</a>
-								<a href="#" class="link list-group-item list-group-item-action happ-crypto-link" target="_blank">
-									<span>Добавить подписку (crypto)</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
 								<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
 									<span>Добавить роутинг (рекомендуется)</span>
 									<div class="link-icon">
@@ -391,21 +478,44 @@
 								</a>
 							</div>
 
-							<div class="instructions">
-								<h6 class="instructions-title">Инструкция по подключению</h6>
-								<ol class="ps-3 mb-0">
-									<li>Скачайте пакет Happ для вашей системы и установите его.</li>
-									<li>Запустите приложение и нажмите «+».</li>
-									<li>Выберите добавление подписки и вставьте ссылку с этой страницы.</li>
-									<li>Сохраните изменения и выберите созданный профиль.</li>
-									<li>Нажмите «Подключиться».</li>
-								</ol>
-								<div class="mt-3 d-flex flex-column gap-2">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-linux-step1.png" alt="Happ Linux шаг 1">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-linux-step2.png" alt="Happ Linux шаг 2">
-									<img class="img-fluid rounded img-help" src="assets/happ/happ-linux-step3.png" alt="Happ Linux шаг 3">
-								</div>
-							</div>
+                                                        <div class="instructions">
+                                                                <h5 class="mb-3">Пошаговая инструкция</h5>
+                                                                <div class="row g-3">
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/linux-step1.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ Linux шаг 1"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 1. Установите пакет Happ и запустите приложение.
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/linux-step2.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ Linux шаг 2"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 2. Нажмите «+», выберите «Подписка» и вставьте ссылку.
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                        <div class="col-12 col-md-4">
+                                                                                <figure class="text-center">
+                                                                                        <img src="/statics/subscription/happ/linux-step3.png"
+                                                                                             class="img-fluid rounded shadow-sm"
+                                                                                             alt="Happ Linux шаг 3"
+                                                                                             onerror="this.style.display='none';">
+                                                                                        <figcaption class="small text-muted mt-2">
+                                                                                                Шаг 3. Сохраните профиль и подключитесь.
+                                                                                        </figcaption>
+                                                                                </figure>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
 						</div>
 					</div>
 				</div>
@@ -684,7 +794,18 @@
                 }
 
                 function copyToClipboard(text) {
-                        navigator.clipboard.writeText(text);
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                                navigator.clipboard.writeText(text).catch(function (err) {
+                                        console.error('Clipboard error:', err);
+                                });
+                        } else {
+                                var ta = document.createElement('textarea');
+                                ta.value = text;
+                                document.body.appendChild(ta);
+                                ta.select();
+                                document.execCommand('copy');
+                                document.body.removeChild(ta);
+                        }
                 }
 
                 function copySubscription() {
@@ -693,54 +814,94 @@
                         copyToClipboard(subUrl);
                 }
 
-                async function loadSubscriptionLinks(subUrl) {
-                        const resp = await fetch(subUrl);
-                        const text = await resp.text();
-                        return text
-                                .split('\n')
-                                .map(l => l.trim())
-                                .filter(Boolean);
-                }
+                function decodeMaybeBase64(text) {
+                        var stripped = text.trim();
+                        if (!stripped) return '';
 
-                async function renderRawSubscriptionLinks() {
-                        const subUrl = getSubscriptionUrl();
-                        if (!subUrl) return;
-
-                        const container = document.getElementById('raw-subscription-links');
-                        if (!container) return;
+                        var base64Chars = /^[A-Za-z0-9+/=\r\n]+$/;
+                        if (!base64Chars.test(stripped)) {
+                                return text;
+                        }
 
                         try {
-                                const links = await loadSubscriptionLinks(subUrl);
-                                links.forEach(link => {
-                                        const line = document.createElement('div');
-                                        line.className = 'text-break small border rounded px-2 py-1';
-                                        line.style.cursor = 'pointer';
-                                        line.title = 'Кликните, чтобы скопировать конфиг';
-                                        line.textContent = link;
-                                        line.addEventListener('click', () => copyToClipboard(link));
-                                        container.appendChild(line);
-                                });
+                                var decoded = atob(stripped.replace(/\s+/g, ''));
+                                if (decoded.indexOf('://') !== -1) {
+                                        return decoded;
+                                }
+                                return decoded;
                         } catch (e) {
-                                console.error(e);
+                                console.warn('Base64 decode failed, using original text', e);
+                                return text;
                         }
                 }
 
-                async function getCryptoSub(subUrl) {
-                        const resp = await fetch('https://crypto.happ.su/api.php', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ url: subUrl }),
-                        });
+                function buildSubscriptionLinksList() {
+                        var anchor = document.getElementById('subscriptionMainLink');
+                        var container = document.getElementById('subscriptionLinksContainer');
 
-                        const text = await resp.text();
+                        if (!anchor || !container) return;
 
-                        try {
-                                const json = JSON.parse(text);
-                                const val = json.result || json.url || json.data;
-                                return (val || '').trim();
-                        } catch {
-                                return text.trim();
-                        }
+                        var url = anchor.href;
+                        if (!url) return;
+
+                        container.innerHTML = '<div class="list-group-item">Загрузка конфигов...</div>';
+
+                        fetch(url)
+                                .then(function (resp) { return resp.text(); })
+                                .then(function (rawText) {
+                                        var parsed = decodeMaybeBase64(rawText);
+                                        var lines = parsed
+                                                .split(/\r?\n/)
+                                                .map(function (l) { return l.trim(); })
+                                                .filter(function (l) { return l.length > 0; });
+
+                                        var links = lines.filter(function (l) {
+                                                return l.indexOf('://') !== -1;
+                                        });
+
+                                        if (!links.length) {
+                                                container.innerHTML =
+                                                        '<div class="list-group-item small text-muted">Не удалось найти конфиги в подписке.</div>';
+                                                return;
+                                        }
+
+                                        container.innerHTML = '';
+
+                                        links.forEach(function (link, index) {
+                                                var schemeEnd = link.indexOf('://');
+                                                var scheme = schemeEnd > 0 ? link.slice(0, schemeEnd).toUpperCase() : 'LINK';
+
+                                                var hashIndex = link.indexOf('#');
+                                                var label;
+                                                if (hashIndex !== -1 && hashIndex < link.length - 1) {
+                                                        label = link.slice(hashIndex + 1);
+                                                        try {
+                                                                label = decodeURIComponent(label);
+                                                        } catch (e) {}
+                                                } else {
+                                                        label = 'Конфиг ' + (index + 1);
+                                                }
+
+                                                var item = document.createElement('button');
+                                                item.type = 'button';
+                                                item.className = 'list-group-item list-group-item-action text-start';
+
+                                                item.innerHTML =
+                                                        '<div class="fw-semibold">[' + scheme + '] ' + label + '</div>' +
+                                                        '<div class="text-break text-muted small">' + link + '</div>';
+
+                                                item.addEventListener('click', function () {
+                                                        copyToClipboard(link);
+                                                });
+
+                                                container.appendChild(item);
+                                        });
+                                })
+                                .catch(function (e) {
+                                        console.error(e);
+                                        container.innerHTML =
+                                                '<div class="list-group-item small text-muted">Ошибка загрузки подписки.</div>';
+                                });
                 }
 
                 function resolveHappLink(path) {
@@ -756,15 +917,6 @@
 
                 (function () {
                         const subUrl = getSubscriptionUrl();
-                        const subscriptionDisplay = document.getElementById('subscription-link-display');
-                        if (subscriptionDisplay) {
-                                if (subUrl) {
-                                        subscriptionDisplay.textContent = subUrl;
-                                        subscriptionDisplay.href = subUrl;
-                                } else {
-                                        subscriptionDisplay.textContent = 'Ссылка подписки недоступна';
-                                }
-                        }
 
                         document.querySelectorAll('[data-happ-link]').forEach(anchor => {
                                 const href = resolveHappLink(anchor.dataset.happLink || '');
@@ -790,35 +942,7 @@
                                 anchor.href = HAPP_ROUTING_LINK;
                         });
 
-                        document.querySelectorAll('.happ-crypto-link').forEach(anchor => {
-                                anchor.addEventListener('click', async (event) => {
-                                        if (anchor.dataset.ready === '1') {
-                                                return;
-                                        }
-
-                                        const subscriptionUrl = getSubscriptionUrl();
-                                        if (!subscriptionUrl) {
-                                                event.preventDefault();
-                                                return;
-                                        }
-
-                                        event.preventDefault();
-                                        try {
-                                                const crypto = await getCryptoSub(subscriptionUrl);
-                                                if (crypto) {
-                                                        anchor.href = `happ://crypt3/${encodeURIComponent(crypto)}`;
-                                                        anchor.dataset.ready = '1';
-                                                        window.location.href = anchor.href;
-                                                }
-                                        } catch (err) {
-                                                console.error(err);
-                                        }
-                                });
-                        });
-
-                        if (subUrl) {
-                                renderRawSubscriptionLinks();
-                        }
+                        document.addEventListener('DOMContentLoaded', buildSubscriptionLinksList);
                 })();
 
         </script>
