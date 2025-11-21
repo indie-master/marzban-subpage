@@ -78,8 +78,8 @@ You can configure them in two ways:
    Edit the default values directly in `index.html`:
 
    ```jinja2
-   {% set TELEGRAM_CHANNEL_URL = 'https://t.me/SwiftlessVPN' %}
-   {% set TELEGRAM_SUPPORT_URL = 'https://t.me/SwiftlessVPN_support' %}
+   {% set TELEGRAM_CHANNEL_URL = 'https://t.me/your_channel_here' %}
+   {% set TELEGRAM_SUPPORT_URL = 'https://t.me/your_support_chat_here' %}
    ```
 
 2. **Advanced way:**
