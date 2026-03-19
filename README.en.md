@@ -1,8 +1,13 @@
 # Marzban Subscription Page Template
+<img width="1204" height="979" alt="image" src="https://github.com/user-attachments/assets/3bbcefdc-18f1-43ff-acee-0305dda783dc" />
+
 
 A repository focused on one product only: a custom subscription page template for Marzban.
 
-The template includes a subscription card, apps section, help section, dark mode, config list, Happ deeplink buttons for subscription and routing import, and support for a custom title and logos. A static demo is included in `docs/` for previewing the page without Marzban.
+The template includes a subscription card, apps section, help section, dark mode, config list, Happ deeplink buttons for subscription and routing import, and support for a custom title and logos.
+
+
+Quick view - https://indie-master.github.io/marzban-subpage/
 
 > Russian main documentation: [`README.md`](./README.md)
 
