@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Основная информация о подписке и способах подключения">
+  <title>Marzban subscription demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+  <script>
+    function calculateSettingAsThemeString({ localStorageTheme, systemSettingDark }) {
+      if (localStorageTheme !== null) return localStorageTheme;
+      if (systemSettingDark.matches) return 'dark';
+      return 'light';
+    }
+    function setTheme(newTheme) {
+      document.documentElement.setAttribute('data-bs-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      currentThemeSetting = newTheme;
+    }
+    const localStorageTheme = localStorage.getItem('theme');
+    const systemSettingDark = window.matchMedia('(prefers-color-scheme: dark)');
+    let currentThemeSetting = calculateSettingAsThemeString({ localStorageTheme, systemSettingDark });
+    setTheme(currentThemeSetting);
+  </script>
+  <style>
+    html {
+      margin: auto;
+      max-width: 520px;
+      min-width: 300px;
+      padding: 0 25px 50px 25px;
+    }
+    .dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+    .dot-green { background-color: green; }
+    .subscription li { padding-top: 10px; padding-bottom: 10px; }
+    .accordion, .subscription .list-group { box-shadow: 0 0 10px rgba(0,0,0,.2); border-radius: 15px; overflow: hidden; }
+    .accordion .list-group { padding-top: 25px; --bs-list-group-item-padding-x: 5px; }
+    .link { display: flex; }
+    .link-icon { width: 25px; height: 25px; margin-left: auto; }
+    .module-title { margin: 0; }
+    .module-title-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 20px; margin-bottom: 20px; }
+    .module:not(:first-child) > .module-title { margin-top: 20px; margin-bottom: 20px; }
+    .lang-btn.active { background-color: var(--bs-secondary); border-color: var(--bs-secondary); color: #fff; }
+    .status-value { display: inline-flex; align-items: center; }
+    .instructions { margin-top: 20px; }
+    .accordion-button:not(.collapsed) { background-color: #dcdcdc; color: var(--bs-accordion-btn-color); }
+    .accordion-button:focus, .form-check-input:focus { box-shadow: none; }
+    [data-bs-theme='dark'] .link-dark { color: #dee2e6 !important; text-decoration: none; }
+    [data-bs-theme='dark'] svg { filter: invert(100%) sepia(10%) saturate(7500%) hue-rotate(198deg) brightness(120%) contrast(108%); }
+    [data-bs-theme='dark'] *, [data-bs-theme='dark'] .subscription .list-group-item span { background-color: #181818; }
+    [data-bs-theme='dark'] .accordion-button, [data-bs-theme='dark'] .subscription .list-group-item, [data-bs-theme='dark'] .subscription .list-group-item > * { background-color: #282828; }
+    [data-bs-theme='dark'] .accordion-button:not(.collapsed) { background-color: #383838; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="modules">
+      <div class="module subscription">
+        <div class="module-title-row">
+          <h3 class="module-title" data-i18n="subscription">Подписка</h3>
+          <div class="d-flex gap-2 align-items-center">
+            <div class="btn-group btn-group-sm" role="group" aria-label="Language switcher">
+              <button type="button" class="btn btn-outline-secondary lang-btn" data-lang="ru">RU</button>
+              <button type="button" class="btn btn-outline-secondary lang-btn" data-lang="en">EN</button>
+            </div>
+          </div>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span data-i18n="subscriptionName">Имя подписки</span>
+            <span>demo_user</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span data-i18n="status">Статус</span>
+            <span class="status-value"><span class="dot dot-green"></span><span id="subscriptionStatusText" data-status="active"></span></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span data-i18n="traffic">Трафик</span>
+            <span>12.4 GB / 100 GB</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span data-i18n="expires">Истекает</span>
+            <span>2026-04-18 09:05:36</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="https://t.me/example_channel" class="link-dark" target="_blank" rel="noopener noreferrer" data-i18n="telegramChannel">Телеграм канал</a>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="https://t.me/example_support" class="link-dark" target="_blank" rel="noopener noreferrer" data-i18n="supportChat">Чат поддержки</a>
+          </li>
+          <li class="list-group-item">
+            <div class="small text-muted mb-2">https://demo.example/sub/demo_user</div>
+            <button class="btn btn-outline-secondary btn-sm w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#subscriptionLinksCollapse" aria-expanded="true" aria-controls="subscriptionLinksCollapse" data-i18n="showConfigs">Показать конфиги из подписки</button>
+            <div class="collapse show" id="subscriptionLinksCollapse">
+              <div id="subscriptionLinksContainer" class="list-group small"></div>
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <form class="form-check form-switch mb-0">
+              <input class="form-check-input" type="checkbox" id="btnSwitchTheme">
+              <label class="form-check-label" for="btnSwitchTheme" data-i18n="darkMode">Тёмный режим</label>
+            </form>
+          </li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <h3 class="module-title" data-i18n="apps">Приложения</h3>
+        <div class="accordion accordion-flush" id="accordionApps">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="apps-ios"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#apps-ios-body" aria-expanded="false" aria-controls="apps-ios-body">iOS</button></h2>
+            <div id="apps-ios-body" class="accordion-collapse collapse" data-bs-parent="#accordionApps"><div class="accordion-body"><h3>Happ</h3><p data-i18n="iosHappDescription">Happ — универсальный клиент для iOS.</p><div class="list-group list-group-flush"><a href="https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973" class="link list-group-item list-group-item-action" target="_blank"><span data-i18n="downloadAppStoreRu">Скачать в App Store (RU)</span><div class="link-icon"><svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg></div></a><a href="happ://add/https%3A%2F%2Fdemo.example%2Fsub%2Fdemo_user" class="link list-group-item list-group-item-action" target="_blank"><span data-i18n="addSubscription">Добавить подписку</span><div class="link-icon"><svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg></div></a><a href="happ://routing/add/demo" class="link list-group-item list-group-item-action" target="_blank"><span data-i18n="addRouting">Добавить роутинг (рекомендуется)</span><div class="link-icon"><svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg></div></a></div></div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="apps-android"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#apps-android-body" aria-expanded="false" aria-controls="apps-android-body">Android</button></h2>
+            <div id="apps-android-body" class="accordion-collapse collapse" data-bs-parent="#accordionApps"><div class="accordion-body"><h3>Happ</h3><p data-i18n="androidHappDescription">Happ — рекомендуемое приложение для Android.</p><div class="list-group list-group-flush"><a href="https://play.google.com/store/apps/details?id=com.happproxy" class="link list-group-item list-group-item-action" target="_blank"><span data-i18n="googlePlay">Google Play</span><div class="link-icon"><svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg></div></a><a href="https://github.com/Happ-proxy/happ-android/releases/latest/download/Happ.apk" class="link list-group-item list-group-item-action" target="_blank"><span data-i18n="downloadApk">Скачать APK</span><div class="link-icon"><svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg></div></a><a href="happ://add/https%3A%2F%2Fdemo.example%2Fsub%2Fdemo_user" class="link list-group-item list-group-item-action" target="_blank"><span data-i18n="addSubscription">Добавить подписку</span><div class="link-icon"><svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg></div></a></div></div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="apps-windows"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#apps-windows-body" aria-expanded="false" aria-controls="apps-windows-body">Windows</button></h2>
+            <div id="apps-windows-body" class="accordion-collapse collapse" data-bs-parent="#accordionApps"><div class="accordion-body"><h3>Happ</h3><p data-i18n="windowsHappDescription">Happ — рекомендуемое приложение для Windows.</p><div class="list-group list-group-flush"><a href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe" class="link list-group-item list-group-item-action" target="_blank"><span data-i18n="downloadWindows">Скачать Happ для Windows</span><div class="link-icon"><svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg></div></a></div></div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="apps-macos"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#apps-macos-body" aria-expanded="false" aria-controls="apps-macos-body">macOS</button></h2>
+            <div id="apps-macos-body" class="accordion-collapse collapse" data-bs-parent="#accordionApps"><div class="accordion-body"><h3>Happ</h3><p data-i18n="macosHappDescription">Happ — рекомендуемое приложение для macOS.</p><div class="list-group list-group-flush"><a href="https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973" class="link list-group-item list-group-item-action" target="_blank"><span data-i18n="downloadAppStoreRu">Скачать в App Store (RU)</span><div class="link-icon"><svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg></div></a></div></div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="apps-linux"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#apps-linux-body" aria-expanded="false" aria-controls="apps-linux-body">Linux</button></h2>
+            <div id="apps-linux-body" class="accordion-collapse collapse" data-bs-parent="#accordionApps"><div class="accordion-body"><h3>Happ</h3><p data-i18n="linuxHappDescription">Happ — рекомендуемое приложение для Linux.</p><div class="list-group list-group-flush"><a href="https://github.com/Happ-proxy/happ-desktop/releases/" class="link list-group-item list-group-item-action" target="_blank"><span data-i18n="downloadLinux">Скачать Happ для Linux</span><div class="link-icon"><svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg></div></a></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    const LANG_STORAGE_KEY = 'subscription_lang';
+    const I18N = {
+      ru: {
+        title: 'Marzban demo', subscription: 'Подписка', subscriptionName: 'Имя подписки', status: 'Статус', active: 'Активна', traffic: 'Трафик', expires: 'Истекает', telegramChannel: 'Телеграм канал', supportChat: 'Чат поддержки', showConfigs: 'Показать конфиги из подписки', darkMode: 'Тёмный режим', apps: 'Приложения', addSubscription: 'Добавить подписку', addRouting: 'Добавить роутинг (рекомендуется)', iosHappDescription: 'Happ — универсальный клиент для iOS.', androidHappDescription: 'Happ — рекомендуемое приложение для Android.', windowsHappDescription: 'Happ — рекомендуемое приложение для Windows.', macosHappDescription: 'Happ — рекомендуемое приложение для macOS.', linuxHappDescription: 'Happ — рекомендуемое приложение для Linux.', downloadAppStoreRu: 'Скачать в App Store (RU)', googlePlay: 'Google Play', downloadApk: 'Скачать APK', downloadWindows: 'Скачать Happ для Windows', downloadLinux: 'Скачать Happ для Linux'
+      },
+      en: {
+        title: 'Marzban demo', subscription: 'Subscription', subscriptionName: 'Subscription name', status: 'Status', active: 'Active', traffic: 'Traffic', expires: 'Expires', telegramChannel: 'Telegram channel', supportChat: 'Support chat', showConfigs: 'Show configs from subscription', darkMode: 'Dark mode', apps: 'Applications', addSubscription: 'Add subscription', addRouting: 'Add routing (recommended)', iosHappDescription: 'Happ is a universal client for iOS.', androidHappDescription: 'Happ is the recommended app for Android.', windowsHappDescription: 'Happ is the recommended app for Windows.', macosHappDescription: 'Happ is the recommended app for macOS.', linuxHappDescription: 'Happ is the recommended app for Linux.', downloadAppStoreRu: 'Download on the App Store (RU)', googlePlay: 'Google Play', downloadApk: 'Download APK', downloadWindows: 'Download Happ for Windows', downloadLinux: 'Download Happ for Linux'
+      }
+    };
+    const DEMO_CONFIGS = [
+      'vless://demo-key@example.com:443?security=tls&type=ws#%F0%9F%87%A9%F0%9F%87%AA%20Germany%201',
+      'vless://demo-key@example.com:443?security=tls&type=ws#%F0%9F%87%B3%F0%9F%87%B1%20Netherlands%201',
+      'ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpkZW1vQGV4YW1wbGUuY29tOjQ0Mw==#%F0%9F%87%AB%F0%9F%87%AE%20Finland%201'
+    ];
+    let currentLanguage = 'ru';
+    function t(key) { return (I18N[currentLanguage] && I18N[currentLanguage][key]) || I18N.ru[key] || key; }
+    function applyLanguage(lang) {
+      currentLanguage = I18N[lang] ? lang : 'ru';
+      document.documentElement.lang = currentLanguage;
+      document.title = I18N[currentLanguage].title;
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.dataset.i18n;
+        if (I18N[currentLanguage][key]) el.textContent = I18N[currentLanguage][key];
+      });
+      document.getElementById('subscriptionStatusText').textContent = t('active');
+      document.querySelectorAll('.lang-btn').forEach((button) => {
+        const active = button.dataset.lang === currentLanguage;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      localStorage.setItem(LANG_STORAGE_KEY, currentLanguage);
+    }
+    function renderConfigs() {
+      const container = document.getElementById('subscriptionLinksContainer');
+      container.innerHTML = '';
+      DEMO_CONFIGS.forEach((config) => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'list-group-item list-group-item-action text-start';
+        const title = decodeURIComponent(config.split('#')[1] || 'Demo config');
+        item.innerHTML = '<div class="fw-semibold">' + title + '</div><div class="text-break text-muted small">' + config + '</div>';
+        container.appendChild(item);
+      });
+    }
+    const buttonSwitchTheme = document.getElementById('btnSwitchTheme');
+    buttonSwitchTheme.checked = currentThemeSetting === 'dark';
+    buttonSwitchTheme.addEventListener('click', () => setTheme(currentThemeSetting === 'dark' ? 'light' : 'dark'));
+    document.querySelectorAll('.lang-btn').forEach((button) => button.addEventListener('click', () => applyLanguage(button.dataset.lang || 'ru')));
+    renderConfigs();
+    applyLanguage(localStorage.getItem(LANG_STORAGE_KEY) || 'ru');
+  </script>
+</body>
+</html>
