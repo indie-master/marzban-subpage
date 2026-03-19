@@ -12,6 +12,24 @@
 
 ---
 
+
+## Демо
+
+Посмотреть, как выглядит шаблон, можно по ссылке:
+
+`https://indie-master.github.io/marzban-subpage/`
+
+Чтобы опубликовать демо через GitHub Pages (пока публикация не завершится, GitHub может отдавать 404):
+
+1. Откройте **Settings** репозитория.
+2. Перейдите в раздел **Pages**.
+3. В блоке **Build and deployment** выберите **Source: Deploy from a branch**.
+4. Выберите ветку **master**.
+5. Выберите папку **/docs**.
+6. Нажмите **Save** и подождите несколько минут, пока сайт опубликуется.
+
+---
+
 ## Возможности
 
 - Красивый и понятный интерфейс (светлая/тёмная тема)
@@ -97,7 +115,70 @@ sudo marzban restart
 
 ---
 
-### 2. Скриншоты для инструкций Happ
+
+### 2. Логотипы сервиса и Happ
+
+Шаблон поддерживает **две переменные для каждого логотипа**:
+
+```jinja2
+{% set SERVICE_TITLE = SERVICE_TITLE | default('Подписка') %}
+{% set SERVICE_LOGO_URL = SERVICE_LOGO_URL | default('') %}
+{% set SERVICE_LOGO_PATH = SERVICE_LOGO_PATH | default('') %}
+{% set HAPP_LOGO_URL = HAPP_LOGO_URL | default('') %}
+{% set HAPP_LOGO_PATH = HAPP_LOGO_PATH | default('') %}
+```
+
+Приоритет всегда такой:
+
+1. Используется `*_PATH`, если он задан и не пустой.
+2. Иначе используется `*_URL`, если он задан и не пустой.
+3. Если обе переменные пустые, логотип не отображается.
+
+В шаблоне это сводится к таким переменным:
+
+```jinja2
+{% set SERVICE_LOGO_SRC = SERVICE_LOGO_PATH if SERVICE_LOGO_PATH else SERVICE_LOGO_URL %}
+{% set HAPP_LOGO_SRC = HAPP_LOGO_PATH if HAPP_LOGO_PATH else HAPP_LOGO_URL %}
+```
+
+Важно: `*_PATH` — это **web-accessible path**, который реально доступен браузеру через Marzban / reverse proxy. Это **не** системный путь Linux вида `/var/lib/...`, а URL-путь, например:
+
+```text
+/statics/subscription/branding/swiftless-logo.png
+/statics/subscription/branding/happ-logo.png
+```
+
+Пример структуры директории на сервере:
+
+```text
+/opt/marzban/statics/subscription/branding/
+  swiftless-logo.png
+  happ-logo.png
+```
+
+Пример с внешними URL:
+
+```jinja2
+{% set SERVICE_LOGO_URL = 'https://example.com/logo.png' %}
+{% set SERVICE_LOGO_PATH = '' %}
+{% set HAPP_LOGO_URL = 'https://example.com/happ-logo.png' %}
+{% set HAPP_LOGO_PATH = '' %}
+```
+
+Пример с локальной статикой:
+
+```jinja2
+{% set SERVICE_LOGO_URL = '' %}
+{% set SERVICE_LOGO_PATH = '/statics/subscription/branding/swiftless-logo.png' %}
+{% set HAPP_LOGO_URL = '' %}
+{% set HAPP_LOGO_PATH = '/statics/subscription/branding/happ-logo.png' %}
+```
+
+Если обе переменные пустые, соответствующий `<img>` не рендерится и вёрстка остаётся чистой.
+
+---
+
+### 3. Скриншоты для инструкций Happ
 
 В каждом блоке приложения (iOS / Android / Windows / macOS / Linux) есть такой фрагмент:
 
@@ -131,7 +212,7 @@ sudo cp ios-step3.png /opt/marzban/statics/subscription/happ/
 
 ---
 
-### 3. Список конфигов из подписки
+### 4. Список конфигов из подписки
 
 В разделе «Подписка»:
 

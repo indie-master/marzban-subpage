@@ -14,6 +14,24 @@ Custom subscription page template for [Marzban](https://github.com/Gozargah/Marz
 
 ---
 
+
+## Live demo
+
+You can preview the template here:
+
+`https://indie-master.github.io/marzban-subpage/`
+
+To publish the demo via GitHub Pages (the site may return 404 until publication finishes):
+
+1. Open repository **Settings**.
+2. Go to **Pages**.
+3. In **Build and deployment**, choose **Source: Deploy from a branch**.
+4. Select branch **master**.
+5. Select folder **/docs**.
+6. Click **Save** and wait a few minutes for the site to be published.
+
+---
+
 ## Features
 
 - ✅ Compatible with Marzban’s `SUBSCRIPTION_PAGE_TEMPLATE`
@@ -93,14 +111,77 @@ These variables are used in the “Подписка” card for:
 
 ---
 
-### 2. Happ download & deeplinks
+
+### 2. Service and Happ logos
+
+The template supports **two variables for each logo source**:
+
+```jinja2
+{% set SERVICE_TITLE = SERVICE_TITLE | default('Подписка') %}
+{% set SERVICE_LOGO_URL = SERVICE_LOGO_URL | default('') %}
+{% set SERVICE_LOGO_PATH = SERVICE_LOGO_PATH | default('') %}
+{% set HAPP_LOGO_URL = HAPP_LOGO_URL | default('') %}
+{% set HAPP_LOGO_PATH = HAPP_LOGO_PATH | default('') %}
+```
+
+Priority is always:
+
+1. `*_PATH` if it is set and not empty.
+2. Otherwise `*_URL` if it is set and not empty.
+3. Otherwise the logo is not rendered.
+
+In the template this is resolved as:
+
+```jinja2
+{% set SERVICE_LOGO_SRC = SERVICE_LOGO_PATH if SERVICE_LOGO_PATH else SERVICE_LOGO_URL %}
+{% set HAPP_LOGO_SRC = HAPP_LOGO_PATH if HAPP_LOGO_PATH else HAPP_LOGO_URL %}
+```
+
+Use `*_PATH` only for **web-accessible paths** served by Marzban / your reverse proxy. This is **not** a Linux filesystem path like `/var/lib/...`; it must be a browser URL path such as:
+
+```text
+/statics/subscription/branding/swiftless-logo.png
+/statics/subscription/branding/happ-logo.png
+```
+
+Example directory structure on the server:
+
+```text
+/opt/marzban/statics/subscription/branding/
+  swiftless-logo.png
+  happ-logo.png
+```
+
+Example with external URLs:
+
+```jinja2
+{% set SERVICE_LOGO_URL = 'https://example.com/logo.png' %}
+{% set SERVICE_LOGO_PATH = '' %}
+{% set HAPP_LOGO_URL = 'https://example.com/happ-logo.png' %}
+{% set HAPP_LOGO_PATH = '' %}
+```
+
+Example with local static files:
+
+```jinja2
+{% set SERVICE_LOGO_URL = '' %}
+{% set SERVICE_LOGO_PATH = '/statics/subscription/branding/swiftless-logo.png' %}
+{% set HAPP_LOGO_URL = '' %}
+{% set HAPP_LOGO_PATH = '/statics/subscription/branding/happ-logo.png' %}
+```
+
+If both values are empty, the corresponding `<img>` is omitted and the layout remains unchanged.
+
+---
+
+### 3. Happ download & deeplinks
 
 All Happ links and deeplinks (App Store, TestFlight, Google Play, APK, Windows, macOS, Linux, routing) are centralized in a small JS configuration object inside `index.html`.
 If the official Happ download URLs change, update them there, redeploy the template and restart Marzban.
 
 ---
 
-### 3. Screenshot images for instructions
+### 4. Screenshot images for instructions
 
 Each platform section (iOS / Android / Windows / macOS / Linux) contains a block like:
 

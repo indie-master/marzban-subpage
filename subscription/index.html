@@ -1,899 +1,156 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Основная информация о подписке и способах подключения">
-	<link rel="icon" type="image/x-icon" href="https://google.com/pic.png">
-	<title></title>
-
-	<!-- Set the theme at the very beginning, so as not to scare a user with a white screen while loading the page on slow devices -->
-	<script type="text/javascript">
-
-		function calculateSettingAsThemeString({ localStorageTheme, systemSettingDark }) {
-			if (localStorageTheme !== null) {
-		    	return localStorageTheme
-		  	}
-		   if (systemSettingDark.matches) {
-		    	return "dark"
-		   }
-		   return "light"
-		}
-
-		function setTheme(newTheme) {
-			document.documentElement.setAttribute('data-bs-theme', newTheme)
-			localStorage.setItem("theme", newTheme);
-			currentThemeSetting = newTheme;
-		}
-		
-		const localStorageTheme = localStorage.getItem("theme");
-		const systemSettingDark = window.matchMedia("(prefers-color-scheme: dark)");
-		let currentThemeSetting = calculateSettingAsThemeString({ localStorageTheme, systemSettingDark });
-
-		setTheme(currentThemeSetting)
-
-	</script>
-
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-
-	<script>
-        const expireDateInit = "{% if not user.expire %}∞{% else %}{% set current_timestamp = now().timestamp() %}{{ user.expire | datetime }}{% endif %}";
-        let expireDateVar = expireDateInit.includes("∞") ? "∞" : new Date(expireDateInit).toLocaleString("ru-RU").replace(",", "")
-	</script>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Основная информация о подписке и способах подключения">
+<title>Подписка</title>
+<script>
+!function(){var t=localStorage.getItem('theme');if(!t&&matchMedia('(prefers-color-scheme:dark)').matches)t='dark';document.documentElement.dataset.theme=t||'light'}();
+</script>
+<style>
+:root{--bg:#f5f5f7;--card:#fff;--text:#0f274a;--muted:#6b7a90;--line:#d5dbe5;--btn:#fff;--btnb:#8b97a8;--soft:#eef2f7;--accent:#2d7dff;--shadow:0 8px 28px rgba(16,24,40,.12)}
+:root[data-theme=dark]{--bg:#181818;--card:#2b2b2b;--text:#f3f6fb;--muted:#aeb8c8;--line:#4b5360;--btn:#2b2b2b;--btnb:#7f8a9a;--soft:#35393f;--accent:#64a2ff;--shadow:none}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif}main{max-width:760px;margin:auto;padding:20px 18px 28px}h1,h2,h3,h4,p{margin:0}.section{margin-top:24px}.card,details{background:var(--card);border-radius:22px;box-shadow:var(--shadow)}.card{overflow:hidden}.topbar{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px}.topbar h1{font-size:clamp(34px,6vw,56px);line-height:1}.brand-logo,.app-logo{display:block;object-fit:contain}.brand-logo{max-width:140px;max-height:52px}.row{display:flex;justify-content:space-between;gap:14px;padding:16px 22px;border-bottom:1px solid var(--line);align-items:center}.row:last-child{border-bottom:0}.label,.btn-link,.value a,a{color:var(--text)}.value{text-align:right;word-break:break-word}.btn-link,a{display:block;text-decoration:none}.btn-link{border:0;background:none;padding:0;font:inherit;cursor:pointer}.actions{padding:16px 22px;border-bottom:1px solid var(--line)}.btn{display:block;width:100%;padding:12px 14px;border:1px solid var(--btnb);border-radius:7px;background:var(--btn);color:var(--muted);font:inherit;text-align:center;cursor:pointer}.switch{display:flex;align-items:center;gap:12px}.switch input{appearance:none;width:46px;height:26px;border-radius:13px;background:#c9ced6;position:relative;cursor:pointer;outline:0}.switch input:before{content:"";position:absolute;top:4px;left:4px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}.switch input:checked{background:var(--accent)}.switch input:checked:before{transform:translateX(20px)}.status-badge{display:inline-flex;align-items:center;gap:8px;font-weight:600}.status-dot{width:10px;height:10px;border-radius:50%;flex:0 0 10px}.status-active{color:#169c24}.status-active .status-dot{background:#169c24}.status-warning{color:#d29922}.status-warning .status-dot{background:#d29922}.status-inactive,.status-blocked{color:#e5534b}.status-inactive .status-dot,.status-blocked .status-dot{background:#e5534b}.status-unknown{color:#8b949e}.status-unknown .status-dot{background:#8b949e}.cfg{display:none;padding:0 22px 18px}.cfg.show{display:block}.cfg-note{color:var(--muted);padding-top:12px}.cfg-list{display:grid;gap:12px;padding-top:14px}.cfg-item{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--soft);color:var(--text);text-align:left;cursor:pointer}.cfg-head{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:10px}.cfg-type{font-weight:700;color:var(--accent);white-space:nowrap}.cfg-name{font-weight:600}.cfg-url{font:13px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;word-break:break-all;overflow-wrap:anywhere;white-space:normal;color:var(--muted)}.hint{margin-top:8px;font-size:13px;color:var(--muted)}.acc{margin-top:12px;overflow:hidden}.acc summary{list-style:none;cursor:pointer;padding:16px 20px;font-size:18px;border-radius:22px;display:flex;justify-content:space-between;align-items:center;gap:12px}.acc summary::-webkit-details-marker{display:none}.acc summary:after{content:'+';font-size:24px;line-height:1;color:var(--muted)}.acc[open] summary{border-bottom:1px solid var(--line);border-radius:22px 22px 0 0}.acc[open] summary:after{content:'–'}.acc-body{padding:18px 20px 20px}.app-head{display:flex;gap:14px;align-items:center;margin-bottom:14px}.app-logo{width:36px;height:36px;border-radius:10px;flex:0 0 36px}.app-meta h3{font-size:24px}.app-meta p{color:var(--muted);margin-top:4px}.list a{padding:14px 0;border-bottom:1px solid var(--line)}.list a:last-child{border-bottom:0}.steps{margin-top:16px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--soft)}.steps h4{margin-bottom:8px}.steps ol{margin:0;padding-left:18px}.steps li+li{margin-top:6px}.help p{color:var(--muted)}@media (max-width:560px){main{padding:16px 12px 24px}.topbar{align-items:flex-start}.brand-logo{max-width:110px;max-height:42px}.row,.actions,.cfg,.acc summary,.acc-body{padding-left:16px;padding-right:16px}.row{align-items:flex-start;flex-direction:column}.value{text-align:left;width:100%}}
+</style>
 </head>
 <body>
-
-        {% set TELEGRAM_CHANNEL_URL = TELEGRAM_CHANNEL_URL | default('https://t.me/your_channel_here') %}
-        {% set TELEGRAM_SUPPORT_URL = TELEGRAM_SUPPORT_URL | default('https://t.me/your_support_chat_here') %}
-
-	<!-- <header>
-		<h1><img id="logo" src="/www/logo.png">Logo</h1>
-	</header> -->
-
-	<main>
-		<div class="modules">
-			<div class="module subscription">
-				<h3 class="module-title">Подписка</h3>
-				{% set subscription_name = user.username | default(username, true) | default(user.name, true) | default('—', true) %}
-				<ul class="list-group list-group-flush">
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						Имя подписки<span>{{ subscription_name }}</span>
-				    </li>
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						Статус<span>{% if user.status.value =='active' %}<div class="dot dot-green"></div>Активна{% elif user.status.value == 'limited' %}<div class="dot dot-yellow"></div>Ограничена{% elif user.status.value == 'expired' %}<div class="dot dot-red"></div>Истекла{% else %}<div class="dot dot-red"></div>Заблокирована{% endif %}</span>	
-				    </li>
-				    <li class="list-group-item d-flex justify-content-between align-items-center">
-						Трафик<span>{{ user.used_traffic | bytesformat }} / {% if not user.data_limit %}∞{% else %}{{ user.data_limit | bytesformat }}{% endif %}</span>
-				    </li>
-				    <li class="list-group-item d-flex justify-content-between align-items-center">
-				    	Истекает<span id="expire"></span><script>document.getElementById('expire').innerHTML = expireDateVar</script>
-				    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <a href="{{ TELEGRAM_CHANNEL_URL }}" target="_blank" class="link-dark" rel="noopener noreferrer">Телеграм канал</a>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <a href="{{ TELEGRAM_SUPPORT_URL }}" target="_blank" class="link-dark" rel="noopener noreferrer">Чат поддержки</a>
-                                    </li>
-                                    <li style="height: 45px;" class="list-group-item d-flex align-items-center">
-                                                <button style="padding: 0;" type="button" class="btn btn-link link-dark" onclick="copySubscription(); showNotification('toast');">Скопировать подписку</button>
-                                                <div id="toast">Подписка скопирована</div>
-                                    </li>
-                                    <li class="list-group-item">
-                                                <div class="mt-3">
-                                                        <a id="subscriptionMainLink"
-                                                           data-subscription-url="{{ subscription_url | default(user.subscription_url, true) }}"
-                                                           href="{{ subscription_url | default(user.subscription_url, true) }}"
-                                                           class="d-none"
-                                                           rel="noopener noreferrer">
-                                                          {{ subscription_url | default(user.subscription_url, true) }}
-                                                        </a>
-
-                                                        <button class="btn btn-outline-secondary btn-sm w-100"
-                                                                type="button"
-                                                                data-bs-toggle="collapse"
-                                                                data-bs-target="#subscriptionLinksCollapse"
-                                                                aria-expanded="false"
-                                                                aria-controls="subscriptionLinksCollapse">
-                                                          Показать конфиги из подписки
-                                                        </button>
-
-                                                        <div class="collapse mt-2" id="subscriptionLinksCollapse">
-                                                          <div id="subscriptionLinksContainer"
-                                                               class="list-group small">
-                                                          </div>
-                                                        </div>
-                                                </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <form class="form-check form-switch">
-                                                  <input class="form-check-input" type="checkbox" id="btnSwitchTheme">
-                                                  <label class="form-check-label" for="btnSwitchTheme">Тёмный режим</label>
-                                                </form>
-				    </li>		
-				</ul>
-			</div>
-
-			<div class="module">
-				<h3 class="module-title">Приложения</h3>
-				<div class="accordion accordion-flush" id="accordionApps">
-					<div class="accordion-item">
-						<h2 class="accordion-header" id="flush-heading-apps-ios">
-							<button class="accordion-button collapsed lh0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-ios" aria-expanded="false" aria-controls="flush-collapse-apps-ios">iOS</button>
-						</h2>
-						<div id="flush-collapse-apps-ios" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-ios" data-bs-parent="#accordionApps">
-							<div class="accordion-body">
-								<h3>Happ</h3>
-								Happ — универсальный клиент для iOS.
-								<div class="list-group list-group-flush">
-                                                                        <a data-happ-link="ios.appStoreRu" target="_blank" class="link list-group-item list-group-item-action">
-                                                                                <span>Скачать в App Store (RU)</span>
-                                                                                <div class="link-icon">
-                                                                                        <svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-                                                                                </div>
-                                                                        </a>
-                                                                        <a href="#" class="link list-group-item list-group-item-action happ-add-link" target="_blank">
-                                                                                <span>Добавить подписку</span>
-                                                                                <div class="link-icon">
-											<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-										</div>
-									</a>
-									<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
-										<span>Добавить роутинг (рекомендуется)</span>
-										<div class="link-icon">
-											<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-										</div>
-									</a>
-							</div>
-
-                                                        <div class="instructions">
-                                                                <h5 class="mb-3">Пошаговая инструкция</h5>
-                                                                <div class="row g-3">
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/ios-step1.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ iOS шаг 1"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 1. Откройте Happ и нажмите «Добавить подписку».
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/ios-step2.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ iOS шаг 2"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 2. Вставьте ссылку подписки и подтвердите.
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/ios-step3.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ iOS шаг 3"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 3. Включите нужный профиль и проверьте подключение.
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                </div>
-                                                        </div>
-						</div>
-				 </div>
-				</div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="flush-heading-apps-android">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-android" aria-expanded="false" aria-controls="flush-collapse-apps-android">Android</button>
-					</h2>
-					<div id="flush-collapse-apps-android" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-android" data-bs-parent="#accordionApps">
-						<div class="accordion-body">
-							<h3>Happ</h3>
-							Happ — рекомендуемое приложение для Android.
-
-							<div class="list-group list-group-flush">
-								<a data-happ-link="android.googlePlay" class="link list-group-item list-group-item-action" target="_blank">
-									<span>Google Play</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
-								<a data-happ-link="android.apk" class="link list-group-item list-group-item-action" target="_blank">
-									<span>Скачать APK</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
-								<a href="#" target="_blank" class="self-link link list-group-item list-group-item-action happ-add-link">
-									<span>Добавить подписку</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
-								<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
-									<span>Добавить роутинг (рекомендуется)</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
-							</div>
-
-                                                        <div class="instructions">
-                                                                <h5 class="mb-3">Пошаговая инструкция</h5>
-                                                                <div class="row g-3">
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/android-step1.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ Android шаг 1"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 1. Откройте Happ и нажмите «+».
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/android-step2.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ Android шаг 2"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 2. Выберите «Подписка» и вставьте ссылку.
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/android-step3.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ Android шаг 3"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 3. Сохраните профиль и подключитесь.
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                </div>
-                                                        </div>
-						</div>
-					</div>
-				 </div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="flush-heading-apps-windows">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-windows" aria-expanded="false" aria-controls="flush-collapse-apps-windows">Windows</button>
-					</h2>
-					<div id="flush-collapse-apps-windows" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-windows" data-bs-parent="#accordionApps">
-						<div class="accordion-body">
-							<h3>Happ</h3>
-							Happ — рекомендуемое приложение для Windows.
-
-							<div class="list-group list-group-flush">
-								<a data-happ-link="windows.alpha" target="_blank" class="link list-group-item list-group-item-action">
-									<span>Скачать Happ для Windows</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
-								<a href="#" class="self-link link list-group-item list-group-item-action happ-add-link" target="_blank">
-									<span>Добавить подписку</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
-								<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
-									<span>Добавить роутинг (рекомендуется)</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
-							</div>
-
-                                                        <div class="instructions">
-                                                                <h5 class="mb-3">Пошаговая инструкция</h5>
-                                                                <div class="row g-3">
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/windows-step1.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ Windows шаг 1"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 1. Установите Happ и откройте приложение.
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/windows-step2.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ Windows шаг 2"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 2. Нажмите «+», выберите «Подписка» и вставьте ссылку.
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/windows-step3.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ Windows шаг 3"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 3. Сохраните профиль и нажмите «Подключиться».
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                </div>
-                                                        </div>
-						</div>
-					</div>
-				 </div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="flush-heading-apps-macos">
-						<button class="accordion-button collapsed lh0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-macos" aria-expanded="false" aria-controls="flush-collapse-apps-macos">macOS</button>
-					</h2>
-					<div id="flush-collapse-apps-macos" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-macos" data-bs-parent="#accordionApps">
-						<div class="accordion-body">
-							<h3>Happ</h3>
-							Happ — рекомендуемое приложение для macOS.
-							<div class="list-group list-group-flush">
-                                                                <a data-happ-link="macos.appStoreRu" target="_blank" class="link list-group-item list-group-item-action">
-                                                                        <span>Скачать в App Store (RU)</span>
-                                                                        <div class="link-icon">
-                                                                                <svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-                                                                        </div>
-                                                                </a>
-                                                                <a href="#" class="link list-group-item list-group-item-action happ-add-link" target="_blank">
-                                                                        <span>Добавить подписку</span>
-                                                                        <div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
-								<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
-									<span>Добавить роутинг (рекомендуется)</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
-							</div>
-
-                                                        <div class="instructions">
-                                                                <h5 class="mb-3">Пошаговая инструкция</h5>
-                                                                <div class="row g-3">
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/macos-step1.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ macOS шаг 1"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 1. Установите Happ и нажмите «+».
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/macos-step2.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ macOS шаг 2"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 2. Выберите «Подписка» и вставьте ссылку.
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/macos-step3.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ macOS шаг 3"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 3. Активируйте профиль и проверьте соединение.
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                </div>
-                                                        </div>
-						</div>
-					</div>
-				 </div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="flush-heading-apps-linux">
-						<button class="accordion-button collapsed lh0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-apps-linux" aria-expanded="false" aria-controls="flush-collapse-apps-linux">Linux</button>
-					</h2>
-					<div id="flush-collapse-apps-linux" class="accordion-collapse collapse" aria-labelledby="flush-heading-apps-linux" data-bs-parent="#accordionApps">
-						<div class="accordion-body">
-							<h3>Happ</h3>
-							Happ — рекомендуемое приложение для Linux.
-							<div class="list-group list-group-flush">
-								<a data-happ-link="linux.alpha" target="_blank" class="link list-group-item list-group-item-action">
-									<span>Скачать Happ для Linux</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
-								<a href="#" class="link list-group-item list-group-item-action happ-add-link" target="_blank">
-									<span>Добавить подписку</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
-								<a href="#" class="link list-group-item list-group-item-action happ-routing-link" target="_blank">
-									<span>Добавить роутинг (рекомендуется)</span>
-									<div class="link-icon">
-										<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									</div>
-								</a>
-							</div>
-
-                                                        <div class="instructions">
-                                                                <h5 class="mb-3">Пошаговая инструкция</h5>
-                                                                <div class="row g-3">
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/linux-step1.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ Linux шаг 1"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 1. Установите пакет Happ и запустите приложение.
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/linux-step2.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ Linux шаг 2"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 2. Нажмите «+», выберите «Подписка» и вставьте ссылку.
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                        <div class="col-12 col-md-4">
-                                                                                <figure class="text-center">
-                                                                                        <img src="/statics/subscription/happ/linux-step3.png"
-                                                                                             class="img-fluid rounded shadow-sm"
-                                                                                             alt="Happ Linux шаг 3"
-                                                                                             onerror="this.style.display='none';">
-                                                                                        <figcaption class="small text-muted mt-2">
-                                                                                                Шаг 3. Сохраните профиль и подключитесь.
-                                                                                        </figcaption>
-                                                                                </figure>
-                                                                        </div>
-                                                                </div>
-                                                        </div>
-						</div>
-					</div>
-				</div>
-				</div>
-			<div class="module">
-				<h3 class="module-title">Помощь</h3>
-				<div class="accordion accordion-flush" id="accordionHelp">
-
-					<div class="accordion-item">
-					    <h2 class="accordion-header" id="flush-heading-help-1">
-					    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-help-1" aria-expanded="false" aria-controls="flush-collapse-help-1">Что такое роутинг и для чего он нужен?</button>
-					    </h2>
-					    <div id="flush-collapse-help-1" class="accordion-collapse collapse" aria-labelledby="flush-heading-help-1" data-bs-parent="#accordionHelp">
-						    <div class="accordion-body">
-							    Роутинг - правила для перенаправления трафика, они предоставляют гибкую настроку для подключения.
-							</div>
-					    </div>
-					</div>
-
-					<div class="accordion-item">
-					    <h2 class="accordion-header" id="flush-heading-help-2">
-					    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-help-2" aria-expanded="false" aria-controls="flush-collapse-help-2">Что такое подписка?</button>
-					    </h2>
-					    <div id="flush-collapse-help-2" class="accordion-collapse collapse" aria-labelledby="flush-heading-help-2" data-bs-parent="#accordionHelp">
-						    <div class="accordion-body">
-							    Подписка - ссылка в специальном формате, по которой приложение загружает с сервера данные, необходимые для подключения.
-							</div>
-					    </div>
-					</div>
-
-					<div class="accordion-item">
-					    <h2 class="accordion-header" id="flush-heading-help-3">
-					    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-help-3" aria-expanded="false" aria-controls="flush-collapse-help-3">Хочу использовать другое приложения для подключения</button>
-					    </h2>
-					    <div id="flush-collapse-help-3" class="accordion-collapse collapse" aria-labelledby="flush-heading-help-3" data-bs-parent="#accordionHelp">
-						    <div class="accordion-body">
-						    	Напишите нам в чат поддержки, мы поможем Вам настроить приложение. 
-							</div>
-					    </div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</body>
-
-	<style>
-
-		html {
-		    margin: auto;
-		    max-width: 520px;
-		    min-width: 300px;
-		    padding: 0 25px 50px 25px;
-		}
-
-		.dot {
-			height: 10px;
-			width: 10px;
-			border-radius: 50%;
-			display: inline-block;
-			margin-right: 5px;	
-		}
-
-		.dot-red {
-			background-color: #bf1d11;
-		}
-
-		.dot-green {
-			background-color: green;
-		}
-
-		.dot-yellow {
-			background-color: #ffbe0a;
-		}
-
-		.app-icon {
-			margin-right: 8px;
-		}
-
-		.img-help {
-			margin-top: 10px;
-			margin-bottom: 10px;
-		}
-
-		.subscription li {
-			padding-top: 10px;
-			padding-bottom: 10px;
-		}
-
-		.accordion-body .list-group {
-			padding-bottom: 5px;
-		}
-
-		.accordion, 
-		.subscription .list-group {
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-		    border-radius: 15px;
-		    overflow: hidden;
-		}
-
-		.accordion .list-group {
-			padding-top: 25px;
-		    --bs-list-group-item-padding-x: 5px;
-		}
-
-		.lh0 {
-			line-height: 0;
-		}
-
-		.instructions {
-			margin-top: 30px;
-		}
-
-		.instructions p {
-			margin-bottom: 5px;
-		}
-
-		.instructions-title {
-			margin: 10px 0;
-			font-size: 18px;
-		}
-
-		.link {
-			display: flex;
-		}
-
-		.link-icon {
-			width: 25px;
-			height: 25px;
-			margin-left: auto;
-		}
-
-		.module-title {
-			margin-top: 20px;
-			margin-bottom: 20px;
-		}
-
-		.accordion-button:not(.collapsed) {
-			background-color: #DCDCDC;
-			color: var(--bs-accordion-btn-color)
-		}
-
-		.accordion-button:focus {
-			box-shadow: none;
-			border-color: white;
-		}
-
-		.form-check-input:focus {
-			box-shadow: none;
-		}
-
-		#toast {
-			visibility: hidden;
-		    width: fit-content;
-		    margin: auto;
-		    color: #000;
-		    text-align: center;
-		    position: fixed;
-		    z-index: 1;
-		    left: 0;
-		    right: 0;
-		    top: 45px;
-		    font-size: 16px;
-			overflow: hidden;
-			white-space: nowrap;
-		}
-
-		#toast.show {
-		    visibility: visible;
-		    animation: fadein 1s, fadeout 1s 2s;
-		}
-
-		@keyframes fadein {
-		    from {
-		        top: 0;
-		        opacity: 0;
-		    }
-		    to {
-		        top: 45px;
-		        opacity: 1
-		    }
-		}
-
-		@keyframes fadeout {
-		    from {
-		        top: 45px;
-		        opacity: 1;
-		    }
-		    to {
-		        top: 0;
-		        opacity: 0;
-		    }
-		}
-
-		[data-bs-theme=light] .form-check-input:focus {
-			border-color: #dee2e6;
-			--bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
-		}
-
-
-
-		/* Full dark theme */
-		[data-bs-theme=dark] .link-dark {
-			color: #dee2e6 !important; 
-			text-decoration: none;
-		}
-
-		[data-bs-theme=dark] #toast {
-			color: var(--bs-list-group-color)
-		}
-
-		[data-bs-theme=dark] svg {
-			filter: invert(100%) sepia(10%) saturate(7500%) hue-rotate(198deg) brightness(120%) contrast(108%);
-		}
-
-		[data-bs-theme=dark] *,
-		[data-bs-theme=dark] .subscription .list-group-item span, 
-		{
-		    background-color: #181818;
-		}
-
-		[data-bs-theme=dark] .accordion-button,
-		[data-bs-theme=dark] .subscription .list-group-item,
-		[data-bs-theme=dark] .subscription .list-group-item > *
-		{
-		    background-color: #282828;
-		}
-
-		[data-bs-theme=dark] .accordion-button:not(.collapsed) {
-			background-color: #383838;
-		}
-
-	</style>
-
-        <script type="text/javascript">
-
-                const HAPP_LINKS = {
-                        ios: {
-                                appStoreRu: 'https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973'
-                        },
-                        android: {
-                                googlePlay: 'https://play.google.com/store/apps/details?id=com.happproxy',
-                                apk: 'https://github.com/Happ-proxy/happ-android/releases/latest/download/Happ.apk'
-                        },
-                        windows: {
-                                alpha: 'https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe'
-                        },
-                        macos: {
-                                appStoreRu: 'https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973'
-                        },
-                        linux: {
-                                alpha: 'https://github.com/Happ-proxy/happ-desktop/releases/'
-                        }
-                };
-
-                const HAPP_ROUTING_LINK = 'happ://routing/add/ewogICAgIkJsb2NrSXAiOiBbCiAgICBdLAogICAgIkJsb2NrU2l0ZXMiOiBbCiAgICAgICAgImdlb3NpdGU6d2luLXNweSIsCiAgICAgICAgImdlb3NpdGU6dG9ycmVudCIsCiAgICAgICAgImdlb3NpdGU6Y2F0ZWdvcnktYWRzIgogICAgXSwKICAgICJEaXJlY3RJcCI6IFsKICAgICAgICAiZ2VvaXA6cHJpdmF0ZSIsCiAgICAgICAgImdlb2lwOmRpcmVjdCIKICAgIF0sCiAgICAiRGlyZWN0U2l0ZXMiOiBbCiAgICAgICAgImdlb3NpdGU6cHJpdmF0ZSIsCiAgICAgICAgImdlb3NpdGU6Y2F0ZWdvcnktcnUiLAogICAgICAgICJnZW9zaXRlOndoaXRlbGlzdCIsCiAgICAgICAgImdlb3NpdGU6bWljcm9zb2Z0IiwKICAgICAgICAiZ2Vvc2l0ZTphcHBsZSIsCiAgICAgICAgImdlb3NpdGU6Z29vZ2xlLXBsYXkiLAogICAgICAgICJnZW9zaXRlOmVwaWNnYW1lcyIsCiAgICAgICAgImdlb3NpdGU6cmlvdCIsCiAgICAgICAgImdlb3NpdGU6ZXNjYXBlZnJvbXRhcmtvdiIsCiAgICAgICAgImdlb3NpdGU6c3RlYW0iLAogICAgICAgICJnZW9zaXRlOm9yaWdpbiIsCiAgICAgICAgImdlb3NpdGU6dHdpdGNoIiwKICAgICAgICAiZ2Vvc2l0ZTpwaW50ZXJlc3QiLAogICAgICAgICJnZW9zaXRlOmZhY2VpdCIKICAgIF0sCiAgICAiRG5zSG9zdHMiOiB7CiAgICAgICAgImxrZmwyLm5hbG9nLnJ1IjogIjIxMy4yNC42NC4xNzUiLAogICAgICAgICJsa25wZC5uYWxvZy5ydSI6ICIyMTMuMjQuNjQuMTgxIgogICAgfSwKICAgICJEb21haW5TdHJhdGVneSI6ICJJUElmTm9uTWF0Y2giLAogICAgIkRvbWVzdGljRE5TRG9tYWluIjogImh0dHBzOi8vNzcuODguOC44L2Rucy1xdWVyeSIsCiAgICAiRG9tZXN0aWNETlNJUCI6ICI3Ny44OC44LjgiLAogICAgIkRvbWVzdGljRE5TVHlwZSI6ICJEb0giLAogICAgIkZha2VETlMiOiAiZmFsc2UiLAogICAgIkdlb2lwdXJsIjogImh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9naC9oeWRyYXBvbmlxdWUvcm9zY29tdnBuLWdlb2lwQDIwMjYwMzE5MDY1MS9yZWxlYXNlL2dlb2lwLmRhdCIsCiAgICAiR2Vvc2l0ZXVybCI6ICJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvZ2gvaHlkcmFwb25pcXVlL3Jvc2NvbXZwbi1nZW9zaXRlQDIwMjYwMzE4MTkwMS9yZWxlYXNlL2dlb3NpdGUuZGF0IiwKICAgICJHbG9iYWxQcm94eSI6ICJ0cnVlIiwKICAgICJMYXN0VXBkYXRlZCI6IDE3NzM5MDY0MDIsCiAgICAiTmFtZSI6ICJSb3Njb21WUE4iLAogICAgIlByb3h5SXAiOiBbCiAgICBdLAogICAgIlByb3h5U2l0ZXMiOiBbCiAgICAgICAgImdlb3NpdGU6Z2l0aHViIiwKICAgICAgICAiZ2Vvc2l0ZTp0d2l0Y2gtYWRzIiwKICAgICAgICAiZ2Vvc2l0ZTp5b3V0dWJlIiwKICAgICAgICAiZ2Vvc2l0ZTp0ZWxlZ3JhbSIKICAgIF0sCiAgICAiUmVtb3RlRE5TRG9tYWluIjogImh0dHBzOi8vOC44LjguOC9kbnMtcXVlcnkiLAogICAgIlJlbW90ZUROU0lQIjogIjguOC44LjgiLAogICAgIlJlbW90ZUROU1R5cGUiOiAiRG9IIiwKICAgICJSb3V0ZU9yZGVyIjogImJsb2NrLXByb3h5LWRpcmVjdCIKfQo=';
-
-                function showNotification(notificationElementId) {
-                        let notification = document.getElementById(notificationElementId)
-                    notification.className = "show";
-                    setTimeout(() => {
-                        notification.className = notification.className.replace("show", "");
-                    }, 2900);
-                }
-
-                function getSubscriptionUrl() {
-                        const el = document.querySelector('[data-subscription-url]');
-                        if (!el) return null;
-                        return (el.dataset.subscriptionUrl || '').trim();
-                }
-
-                function copyToClipboard(text) {
-                        if (navigator.clipboard && navigator.clipboard.writeText) {
-                                navigator.clipboard.writeText(text).catch(function (err) {
-                                        console.error('Clipboard error:', err);
-                                });
-                        } else {
-                                var ta = document.createElement('textarea');
-                                ta.value = text;
-                                document.body.appendChild(ta);
-                                ta.select();
-                                document.execCommand('copy');
-                                document.body.removeChild(ta);
-                        }
-                }
-
-                function copySubscription() {
-                        const subUrl = getSubscriptionUrl();
-                        if (!subUrl) return;
-                        copyToClipboard(subUrl);
-                }
-
-                function decodeMaybeBase64(text) {
-                        var stripped = text.trim();
-                        if (!stripped) return '';
-
-                        var base64Chars = /^[A-Za-z0-9+/=\r\n]+$/;
-                        if (!base64Chars.test(stripped)) {
-                                return text;
-                        }
-
-                        try {
-                                var decoded = atob(stripped.replace(/\s+/g, ''));
-                                if (decoded.indexOf('://') !== -1) {
-                                        return decoded;
-                                }
-                                return decoded;
-                        } catch (e) {
-                                console.warn('Base64 decode failed, using original text', e);
-                                return text;
-                        }
-                }
-
-                function buildSubscriptionLinksList() {
-                        var anchor = document.getElementById('subscriptionMainLink');
-                        var container = document.getElementById('subscriptionLinksContainer');
-
-                        if (!anchor || !container) return;
-
-                        var url = anchor.href;
-                        if (!url) return;
-
-                        container.innerHTML = '<div class="list-group-item">Загрузка конфигов...</div>';
-
-                        fetch(url)
-                                .then(function (resp) { return resp.text(); })
-                                .then(function (rawText) {
-                                        var parsed = decodeMaybeBase64(rawText);
-                                        var lines = parsed
-                                                .split(/\r?\n/)
-                                                .map(function (l) { return l.trim(); })
-                                                .filter(function (l) { return l.length > 0; });
-
-                                        var links = lines.filter(function (l) {
-                                                return l.indexOf('://') !== -1;
-                                        });
-
-                                        if (!links.length) {
-                                                container.innerHTML =
-                                                        '<div class="list-group-item small text-muted">Не удалось найти конфиги в подписке.</div>';
-                                                return;
-                                        }
-
-                                        container.innerHTML = '';
-
-                                        links.forEach(function (link, index) {
-                                                var schemeEnd = link.indexOf('://');
-                                                var scheme = schemeEnd > 0 ? link.slice(0, schemeEnd).toUpperCase() : 'LINK';
-
-                                                var hashIndex = link.indexOf('#');
-                                                var label;
-                                                if (hashIndex !== -1 && hashIndex < link.length - 1) {
-                                                        label = link.slice(hashIndex + 1);
-                                                        try {
-                                                                label = decodeURIComponent(label);
-                                                        } catch (e) {}
-                                                } else {
-                                                        label = 'Конфиг ' + (index + 1);
-                                                }
-
-                                                var item = document.createElement('button');
-                                                item.type = 'button';
-                                                item.className = 'list-group-item list-group-item-action text-start';
-
-                                                item.innerHTML =
-                                                        '<div class="fw-semibold">[' + scheme + '] ' + label + '</div>' +
-                                                        '<div class="text-break text-muted small">' + link + '</div>';
-
-                                                item.addEventListener('click', function () {
-                                                        copyToClipboard(link);
-                                                });
-
-                                                container.appendChild(item);
-                                        });
-                                })
-                                .catch(function (e) {
-                                        console.error(e);
-                                        container.innerHTML =
-                                                '<div class="list-group-item small text-muted">Ошибка загрузки подписки.</div>';
-                                });
-                }
-
-                function resolveHappLink(path) {
-                        return path.split('.').reduce((acc, key) => (acc && acc[key] ? acc[key] : null), HAPP_LINKS);
-                }
-
-                const buttonSwitchTheme = document.getElementById('btnSwitchTheme');
-                buttonSwitchTheme.checked = currentThemeSetting === 'dark';
-                buttonSwitchTheme.addEventListener("click", () => {
-                          const newTheme = currentThemeSetting === "dark" ? "light" : "dark";
-                          setTheme(newTheme);
-                });
-
-                (function () {
-                        const subUrl = getSubscriptionUrl();
-
-                        document.querySelectorAll('[data-happ-link]').forEach(anchor => {
-                                const href = resolveHappLink(anchor.dataset.happLink || '');
-                                if (href) {
-                                        anchor.href = href;
-                                } else {
-                                        anchor.classList.add('disabled');
-                                        anchor.setAttribute('aria-disabled', 'true');
-                                }
-                        });
-
-                        const addLink = subUrl ? `happ://add/${encodeURIComponent(subUrl)}` : null;
-                        document.querySelectorAll('.happ-add-link').forEach(anchor => {
-                                if (addLink) {
-                                        anchor.href = addLink;
-                                } else {
-                                        anchor.classList.add('disabled');
-                                        anchor.setAttribute('aria-disabled', 'true');
-                                }
-                        });
-
-                        document.querySelectorAll('.happ-routing-link').forEach(anchor => {
-                                anchor.href = HAPP_ROUTING_LINK;
-                        });
-
-                        document.addEventListener('DOMContentLoaded', buildSubscriptionLinksList);
-                })();
-
-        </script>
+{% set TELEGRAM_CHANNEL_URL = TELEGRAM_CHANNEL_URL | default('https://t.me/your_channel_here') %}
+{% set TELEGRAM_SUPPORT_URL = TELEGRAM_SUPPORT_URL | default('https://t.me/your_support_chat_here') %}
+{% set SERVICE_TITLE = SERVICE_TITLE | default('Подписка') %}
+{% set SERVICE_LOGO_URL = SERVICE_LOGO_URL | default('') %}
+{% set SERVICE_LOGO_PATH = SERVICE_LOGO_PATH | default('') %}
+{% set SERVICE_LOGO_SRC = SERVICE_LOGO_PATH if SERVICE_LOGO_PATH else SERVICE_LOGO_URL %}
+{% set HAPP_LOGO_URL = HAPP_LOGO_URL | default('') %}
+{% set HAPP_LOGO_PATH = HAPP_LOGO_PATH | default('') %}
+{% set HAPP_LOGO_SRC = HAPP_LOGO_PATH if HAPP_LOGO_PATH else HAPP_LOGO_URL %}
+{% set NAME = user.username | default(username, true) | default(user.name, true) | default('—', true) %}
+{% set STATUS = user.status.value | default('blocked', true) %}
+<script>
+const EXP="{% if not user.expire %}∞{% else %}{{ user.expire | datetime }}{% endif %}",ROUTING='happ://routing/add/ewogICAgIkJsb2NrSXAiOiBbCiAgICBdLAogICAgIkJsb2NrU2l0ZXMiOiBbCiAgICAgICAgImdlb3NpdGU6d2luLXNweSIsCiAgICAgICAgImdlb3NpdGU6dG9ycmVudCIsCiAgICAgICAgImdlb3NpdGU6Y2F0ZWdvcnktYWRzIgogICAgXSwKICAgICJEaXJlY3RJcCI6IFsKICAgICAgICAiZ2VvaXA6cHJpdmF0ZSIsCiAgICAgICAgImdlb2lwOmRpcmVjdCIKICAgIF0sCiAgICAiRGlyZWN0U2l0ZXMiOiBbCiAgICAgICAgImdlb3NpdGU6cHJpdmF0ZSIsCiAgICAgICAgImdlb3NpdGU6Y2F0ZWdvcnktcnUiLAogICAgICAgICJnZW9zaXRlOndoaXRlbGlzdCIsCiAgICAgICAgImdlb3NpdGU6bWljcm9zb2Z0IiwKICAgICAgICAiZ2Vvc2l0ZTphcHBsZSIsCiAgICAgICAgImdlb3NpdGU6Z29vZ2xlLXBsYXkiLAogICAgICAgICJnZW9zaXRlOmVwaWNnYW1lcyIsCiAgICAgICAgImdlb3NpdGU6cmlvdCIsCiAgICAgICAgImdlb3NpdGU6ZXNjYXBlZnJvbXRhcmtvdiIsCiAgICAgICAgImdlb3NpdGU6c3RlYW0iLAogICAgICAgICJnZW9zaXRlOm9yaWdpbiIsCiAgICAgICAgImdlb3NpdGU6dHdpdGNoIiwKICAgICAgICAiZ2Vvc2l0ZTpwaW50ZXJlc3QiLAogICAgICAgICJnZW9zaXRlOmZhY2VpdCIKICAgIF0sCiAgICAiRG5zSG9zdHMiOiB7CiAgICAgICAgImxrZmwyLm5hbG9nLnJ1IjogIjIxMy4yNC42NC4xNzUiLAogICAgICAgICJsa25wZC5uYWxvZy5ydSI6ICIyMTMuMjQuNjQuMTgxIgogICAgfSwKICAgICJEb21haW5TdHJhdGVneSI6ICJJUElmTm9uTWF0Y2giLAogICAgIkRvbWVzdGljRE5TRG9tYWluIjogImh0dHBzOi8vNzcuODguOC44L2Rucy1xdWVyeSIsCiAgICAiRG9tZXN0aWNETlNJUCI6ICI3Ny44OC44LjgiLAogICAgIkRvbWVzdGljRE5TVHlwZSI6ICJEb0giLAogICAgIkZha2VETlMiOiAiZmFsc2UiLAogICAgIkdlb2lwdXJsIjogImh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9naC9oeWRyYXBvbmlxdWUvcm9zY29tdnBuLWdlb2lwQDIwMjYwMzE5MDY1MS9yZWxlYXNlL2dlb2lwLmRhdCIsCiAgICAiR2Vvc2l0ZXVybCI6ICJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvZ2gvaHlkcmFwb25pcXVlL3Jvc2NvbXZwbi1nZW9zaXRlQDIwMjYwMzE4MTkwMS9yZWxlYXNlL2dlb3NpdGUuZGF0IiwKICAgICJHbG9iYWxQcm94eSI6ICJ0cnVlIiwKICAgICJMYXN0VXBkYXRlZCI6IDE3NzM5MDY0MDIsCiAgICAiTmFtZSI6ICJSb3Njb21WUE4iLAogICAgIlByb3h5SXAiOiBbCiAgICBdLAogICAgIlByb3h5U2l0ZXMiOiBbCiAgICAgICAgImdlb3NpdGU6Z2l0aHViIiwKICAgICAgICAiZ2Vvc2l0ZTp0d2l0Y2gtYWRzIiwKICAgICAgICAiZ2Vvc2l0ZTp5b3V0dWJlIiwKICAgICAgICAiZ2Vvc2l0ZTp0ZWxlZ3JhbSIKICAgIF0sCiAgICAiUmVtb3RlRE5TRG9tYWluIjogImh0dHBzOi8vOC44LjguOC9kbnMtcXVlcnkiLAogICAgIlJlbW90ZUROU0lQIjogIjguOC44LjgiLAogICAgIlJlbW90ZUROU1R5cGUiOiAiRG9IIiwKICAgICJSb3V0ZU9yZGVyIjogImJsb2NrLXByb3h5LWRpcmVjdCIKfQo=';
+function cp(t){navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(t):(()=>{let a=document.createElement('textarea');a.value=t,document.body.append(a),a.select(),document.execCommand('copy'),a.remove()})()}
+function dec(t){t=t.trim();if(!/^[A-Za-z0-9+/=\r\n]+$/.test(t))return t;try{let d=atob(t.replace(/\s+/g,''));return d.includes('://')?d:t}catch{return t}}
+function cfgCard(v,i){let s=v.indexOf('://'),h=v.indexOf('#'),type=(s>0?v.slice(0,s):'link').toUpperCase(),name='Конфиг '+(i+1);if(h>0&&h<v.length-1)try{name=decodeURIComponent(v.slice(h+1))}catch{}return '<button class="cfg-item" type="button" data-copy="'+v.replace(/"/g,'&quot;')+'"><div class="cfg-head"><span class="cfg-type">['+type+']</span><span class="cfg-name">'+name+'</span></div><div class="cfg-url">'+v+'</div><div class="hint">Нажмите, чтобы скопировать полный конфиг</div></button>'}
+addEventListener('DOMContentLoaded',()=>{let r=document.documentElement,b=document.getElementById('theme'),e=document.getElementById('expire'),u=(document.getElementById('sub-url').dataset.url||'').trim(),c=document.getElementById('cfg'),x=document.getElementById('cfgb'),loaded=0;b.checked=(localStorage.getItem('theme')||r.dataset.theme)==='dark';b.onchange=()=>{r.dataset.theme=b.checked?'dark':'light';localStorage.setItem('theme',r.dataset.theme)};e.textContent=!EXP||EXP==='∞'?'∞':((d=new Date(EXP)),isNaN(d)?EXP:d.toLocaleString('ru-RU').replace(',',''));document.querySelectorAll('.sub-link').forEach(a=>a.href=u?'happ://add/'+u:'#');document.querySelectorAll('.route-link').forEach(a=>a.href=ROUTING);document.getElementById('copy-sub').onclick=()=>u&&cp(u);function show(v){c.innerHTML=v}x.onclick=async()=>{c.classList.toggle('show');if(loaded||!c.classList.contains('show'))return;if(!u)return show('<div class="cfg-note">Ошибка загрузки подписки.</div>');show('<div class="cfg-note">Загрузка конфигов...</div>');try{let list=dec(await (await fetch(u)).text()).split(/\r?\n/).map(v=>v.trim()).filter(v=>v.includes('://'));loaded=1;show(list.length?'<div class="cfg-list">'+list.map(cfgCard).join('')+'</div>':'<div class="cfg-note">Не удалось найти конфиги в подписке.</div>');c.querySelectorAll('[data-copy]').forEach(n=>n.onclick=()=>cp(n.dataset.copy))}catch{show('<div class="cfg-note">Ошибка загрузки подписки.</div>')}}});
+</script>
+<main>
+  <div class="topbar">
+    <h1>{{ SERVICE_TITLE }}</h1>
+    {% if SERVICE_LOGO_SRC %}<img src="{{ SERVICE_LOGO_SRC }}" alt="{{ SERVICE_TITLE }}" class="brand-logo" onerror="this.remove()">{% endif %}
+  </div>
+
+  <div class="card">
+    <div class="row"><div class="label">Имя подписки</div><div class="value">{{ NAME }}</div></div>
+    <div class="row"><div class="label">Статус</div><div class="value">
+      {% if STATUS == 'active' %}<span class="status-badge status-active"><span class="status-dot"></span>Активна</span>
+      {% elif STATUS in ['limited','warning'] %}<span class="status-badge status-warning"><span class="status-dot"></span>Ограничена</span>
+      {% elif STATUS in ['inactive','blocked','expired'] %}<span class="status-badge status-blocked"><span class="status-dot"></span>{% if STATUS == 'inactive' %}Неактивна{% elif STATUS == 'expired' %}Истекла{% else %}Заблокирована{% endif %}</span>
+      {% else %}<span class="status-badge status-unknown"><span class="status-dot"></span>{{ STATUS }}</span>{% endif %}
+    </div></div>
+    <div class="row"><div class="label">Трафик</div><div class="value">{{ user.used_traffic | bytesformat }} / {% if not user.data_limit %}∞{% else %}{{ user.data_limit | bytesformat }}{% endif %}</div></div>
+    <div class="row"><div class="label">Истекает</div><div class="value" id="expire"></div></div>
+    <div class="row"><a href="{{ TELEGRAM_CHANNEL_URL }}" target="_blank" rel="noopener noreferrer">Телеграм канал</a></div>
+    <div class="row"><a href="{{ TELEGRAM_SUPPORT_URL }}" target="_blank" rel="noopener noreferrer">Чат поддержки</a></div>
+    <div class="row"><button class="btn-link" id="copy-sub" type="button">Скопировать подписку</button></div>
+    <div class="actions">
+      <a id="sub-url" data-url="{{ subscription_url | default(user.subscription_url, true) }}" hidden href="{{ subscription_url | default(user.subscription_url, true) }}"></a>
+      <button class="btn" id="cfgb" type="button">Показать конфиги из подписки</button>
+    </div>
+    <div class="cfg" id="cfg"></div>
+    <div class="row"><label class="switch"><input type="checkbox" id="theme"><span>Тёмный режим</span></label></div>
+  </div>
+
+  <section class="section">
+    <h2>Приложения</h2>
+
+    <details class="acc">
+      <summary>iOS</summary>
+      <div class="acc-body">
+        <div class="app-head">
+          {% if HAPP_LOGO_SRC %}<img src="{{ HAPP_LOGO_SRC }}" alt="Happ - Proxy Utility" class="app-logo" onerror="this.remove()">{% endif %}
+          <div class="app-meta"><h3>Happ - Proxy Utility</h3><p>Happ - Proxy Utility — универсальный клиент для iOS.</p></div>
+        </div>
+        <div class="list">
+          <a href="https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973" target="_blank" rel="noopener noreferrer">Скачать в App Store (RU)</a>
+          <a class="sub-link" href="#">Добавить подписку</a>
+          <a class="route-link" href="#">Добавить роутинг</a>
+        </div>
+        <div class="steps"><h4>Пошаговая инструкция</h4><ol><li>Откройте Happ и нажмите «Добавить подписку».</li><li>Вставьте ссылку подписки и подтвердите.</li><li>Включите нужный профиль и проверьте подключение.</li></ol></div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Android</summary>
+      <div class="acc-body">
+        <div class="app-head">
+          {% if HAPP_LOGO_SRC %}<img src="{{ HAPP_LOGO_SRC }}" alt="Happ - Proxy Utility" class="app-logo" onerror="this.remove()">{% endif %}
+          <div class="app-meta"><h3>Happ - Proxy Utility</h3><p>Happ - Proxy Utility — рекомендуемый клиент для Android.</p></div>
+        </div>
+        <div class="list">
+          <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank" rel="noopener noreferrer">Google Play</a>
+          <a href="https://github.com/Happ-proxy/happ-android/releases/latest/download/Happ.apk" target="_blank" rel="noopener noreferrer">Скачать APK</a>
+          <a class="sub-link" href="#">Добавить подписку</a>
+          <a class="route-link" href="#">Добавить роутинг</a>
+        </div>
+        <div class="steps"><h4>Пошаговая инструкция</h4><ol><li>Откройте Happ и нажмите «+».</li><li>Выберите «Подписка» и вставьте ссылку.</li><li>Сохраните профиль и подключитесь.</li></ol></div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Windows</summary>
+      <div class="acc-body">
+        <div class="app-head">
+          {% if HAPP_LOGO_SRC %}<img src="{{ HAPP_LOGO_SRC }}" alt="Happ - Proxy Utility" class="app-logo" onerror="this.remove()">{% endif %}
+          <div class="app-meta"><h3>Happ - Proxy Utility</h3><p>Happ - Proxy Utility — рекомендуемый клиент для Windows.</p></div>
+        </div>
+        <div class="list">
+          <a href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe" target="_blank" rel="noopener noreferrer">Скачать Happ для Windows</a>
+          <a class="sub-link" href="#">Добавить подписку</a>
+          <a class="route-link" href="#">Добавить роутинг</a>
+        </div>
+        <div class="steps"><h4>Пошаговая инструкция</h4><ol><li>Установите Happ и откройте приложение.</li><li>Нажмите «+», выберите «Подписка» и вставьте ссылку.</li><li>Сохраните профиль и нажмите «Подключиться».</li></ol></div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>macOS</summary>
+      <div class="acc-body">
+        <div class="app-head">
+          {% if HAPP_LOGO_SRC %}<img src="{{ HAPP_LOGO_SRC }}" alt="Happ - Proxy Utility" class="app-logo" onerror="this.remove()">{% endif %}
+          <div class="app-meta"><h3>Happ - Proxy Utility</h3><p>Happ - Proxy Utility — рекомендуемый клиент для macOS.</p></div>
+        </div>
+        <div class="list">
+          <a href="https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973" target="_blank" rel="noopener noreferrer">Скачать в App Store (RU)</a>
+          <a class="sub-link" href="#">Добавить подписку</a>
+          <a class="route-link" href="#">Добавить роутинг</a>
+        </div>
+        <div class="steps"><h4>Пошаговая инструкция</h4><ol><li>Установите Happ и нажмите «+».</li><li>Выберите «Подписка» и вставьте ссылку.</li><li>Активируйте профиль и проверьте соединение.</li></ol></div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Linux</summary>
+      <div class="acc-body">
+        <div class="app-head">
+          {% if HAPP_LOGO_SRC %}<img src="{{ HAPP_LOGO_SRC }}" alt="Happ - Proxy Utility" class="app-logo" onerror="this.remove()">{% endif %}
+          <div class="app-meta"><h3>Happ - Proxy Utility</h3><p>Happ - Proxy Utility — рекомендуемый клиент для Linux.</p></div>
+        </div>
+        <div class="list">
+          <a href="https://github.com/Happ-proxy/happ-desktop/releases/" target="_blank" rel="noopener noreferrer">Скачать Happ для Linux</a>
+          <a class="sub-link" href="#">Добавить подписку</a>
+          <a class="route-link" href="#">Добавить роутинг</a>
+        </div>
+        <div class="steps"><h4>Пошаговая инструкция</h4><ol><li>Установите Happ и запустите приложение.</li><li>Нажмите «+», выберите «Подписка» и вставьте ссылку.</li><li>Сохраните профиль и подключитесь.</li></ol></div>
+      </div>
+    </details>
+  </section>
+
+  <section class="section">
+    <h2>Помощь</h2>
+    <details class="acc help"><summary>Что такое роутинг и для чего он нужен?</summary><div class="acc-body"><p>Роутинг помогает разделять трафик: локальные и российские ресурсы можно направлять напрямую, а остальной трафик — через VPN. Это часто улучшает совместимость и удобство.</p></div></details>
+    <details class="acc help"><summary>Что такое подписка?</summary><div class="acc-body"><p>Подписка содержит список серверов и настроек. Обновлять её удобнее, чем добавлять каждый сервер вручную: обычно достаточно просто обновить ссылку подписки в приложении.</p></div></details>
+    <details class="acc help"><summary>Хочу использовать другое приложение для подключения</summary><div class="acc-body"><p>Можно использовать и другие клиенты, если они поддерживают такие ссылки конфигурации. Для этого откройте блок конфигов из подписки и скопируйте нужный конфиг вручную.</p></div></details>
+  </section>
+</main>
+</body>
 </html>
