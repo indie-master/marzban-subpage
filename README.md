@@ -217,9 +217,7 @@ sudo marzban restart
 
 GitHub Pages URL для этого репозитория:
 
-```text
 https://indie-master.github.io/marzban-subpage/
-```
 
 Если GitHub Pages ещё не включён, его нужно настроить на публикацию из ветки `master` и директории `docs/`.
 
