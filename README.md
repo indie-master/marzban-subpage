@@ -1,233 +1,240 @@
-# Marzban Subscription Page (indie-master Edition)
+# Шаблон страницы подписки Marzban
 
-Custom subscription page template for [Marzban](https://github.com/Gozargah/Marzban), focused on:
+Готовый репозиторий с одним продуктом: кастомным шаблоном страницы подписки для Marzban.
 
-- Clean layout with dark/light mode
-- Single universal client: **Happ**
-- One-click subscription import into Happ
-- Routing import button for Happ
-- Expandable list of raw config links (vless://, vmess://, ss://, trojan://, …)
-- Telegram channel & support chat links configurable via template variables
-- Platform-specific step-by-step instructions with screenshots
+Шаблон показывает карточку подписки, блок приложений, раздел помощи, тёмную тему, список конфигов, deeplink-кнопки для добавления подписки и роутинга в Happ, а также поддерживает кастомный заголовок и логотипы. Для быстрого просмотра без Marzban в репозитории есть статическое demo в `docs/`.
 
-> Russian documentation is available in [`README.ru.md`](./README.ru.md).
+> English version: [`README.en.md`](./README.en.md)
 
----
+## Возможности шаблона
 
+- карточка подписки с именем, статусом, трафиком и сроком действия;
+- ссылки на Telegram-канал и чат поддержки;
+- кнопка копирования ссылки подписки;
+- кнопка показа конфигов из подписки;
+- список конфигов с копированием по клику;
+- тёмная тема;
+- deeplink-кнопка добавления подписки в Happ;
+- deeplink-кнопка добавления роутинга в Happ;
+- блок приложений для iOS, Android, Windows, macOS и Linux;
+- раздел помощи;
+- кастомный заголовок сервиса;
+- кастомные логотипы сервиса и Happ;
+- статическая demo-страница в `docs/`, визуально повторяющая основной шаблон.
 
-## Live demo
+## Структура репозитория
 
-You can preview the template here:
+```text
+.
+├── README.md
+├── README.en.md
+├── docs/
+│   └── index.html
+└── subscription/
+    └── index.html
+```
 
-`https://indie-master.github.io/marzban-subpage/`
+- `subscription/index.html` — основной Jinja-шаблон для Marzban.
+- `docs/index.html` — статическая demo-страница на безопасных demo-данных, без Jinja и без backend-зависимостей.
 
-To publish the demo via GitHub Pages (the site may return 404 until publication finishes):
+## Установка
 
-1. Open repository **Settings**.
-2. Go to **Pages**.
-3. In **Build and deployment**, choose **Source: Deploy from a branch**.
-4. Select branch **master**.
-5. Select folder **/docs**.
-6. Click **Save** and wait a few minutes for the site to be published.
-
----
-
-## Features
-
-- ✅ Compatible with Marzban’s `SUBSCRIPTION_PAGE_TEMPLATE`
-- ✅ Happ as the only recommended client (iOS, Android, Windows, macOS, Linux)
-- ✅ Deep links:
-  - `happ://add/...` to import the subscription
-  - `happ://routing/add/...` to import routing rules
-- ✅ Automatic parsing of the user’s subscription:
-  - fetches subscription URL
-  - decodes Base64 if needed
-  - splits into individual links
-  - shows them in a collapsible list with copy-on-click
-- ✅ Dark mode toggle
-- ✅ Easy to customize
-
----
-
-## Installation
-
-1. **Download template to Marzban templates directory**
+1. Создайте директорию для шаблона:
 
 ```bash
 sudo mkdir -p /var/lib/marzban/templates/subscription
+```
 
+2. Скачайте актуальный шаблон:
+
+```bash
 sudo wget -O /var/lib/marzban/templates/subscription/index.html \
   https://raw.githubusercontent.com/indie-master/marzban-subpage/master/subscription/index.html
 ```
 
-2. **Tell Marzban to use custom templates**
-
-Append to `/opt/marzban/.env`:
+3. Укажите Marzban использовать кастомный шаблон:
 
 ```bash
 echo 'CUSTOM_TEMPLATES_DIRECTORY="/var/lib/marzban/templates/"' | sudo tee -a /opt/marzban/.env
 echo 'SUBSCRIPTION_PAGE_TEMPLATE="subscription/index.html"' | sudo tee -a /opt/marzban/.env
 ```
 
-3. **Restart Marzban**
+4. Перезапустите Marzban:
 
 ```bash
 sudo marzban restart
 ```
 
-After that, opening any user subscription link (`/sbscr/...`) will use this template.
+После этого пользовательские ссылки вида `/sbscr/...` будут открываться через этот шаблон.
 
----
+## Подключение шаблона в Marzban
 
-## Configuration
+Для работы нужен активный кастомный шаблон через `CUSTOM_TEMPLATES_DIRECTORY` и `SUBSCRIPTION_PAGE_TEMPLATE`. Сам шаблон рассчитан на стандартную Jinja-рендеринг-логику страницы подписки Marzban и использует реальные данные пользователя: имя, статус, трафик, дату истечения и URL подписки.
 
-### 1. Telegram channel & support chat links
+## Настройка кастомных параметров
 
-At the top of `subscription/index.html` there are template variables:
+В начале `subscription/index.html` используются следующие переменные:
 
-```jinja2
-{% set TELEGRAM_CHANNEL_URL = TELEGRAM_CHANNEL_URL | default('https://t.me/your_channel_here') %}
-{% set TELEGRAM_SUPPORT_URL = TELEGRAM_SUPPORT_URL | default('https://t.me/your_support_chat_here') %}
-```
-
-You can configure them in two ways:
-
-1. **Simple way (recommended):**
-   Edit the default values directly in `index.html`:
-
-   ```jinja2
-   {% set TELEGRAM_CHANNEL_URL = 'https://t.me/your_channel_here' %}
-   {% set TELEGRAM_SUPPORT_URL = 'https://t.me/your_support_chat_here' %}
-   ```
-
-2. **Advanced way:**
-   Pass `TELEGRAM_CHANNEL_URL` and `TELEGRAM_SUPPORT_URL` from your Marzban backend
-   when rendering the template (requires backend changes, not included here).
-
-These variables are used in the “Подписка” card for:
-
-* «Телеграм канал»
-* «Чат поддержки»
-
----
-
-
-### 2. Service and Happ logos
-
-The template supports **two variables for each logo source**:
+### `SERVICE_TITLE`
+- Что делает: задаёт заголовок страницы в верхнем блоке.
+- Fallback: `Подписка`.
+- Пример:
 
 ```jinja2
-{% set SERVICE_TITLE = SERVICE_TITLE | default('Подписка') %}
-{% set SERVICE_LOGO_URL = SERVICE_LOGO_URL | default('') %}
-{% set SERVICE_LOGO_PATH = SERVICE_LOGO_PATH | default('') %}
-{% set HAPP_LOGO_URL = HAPP_LOGO_URL | default('') %}
-{% set HAPP_LOGO_PATH = HAPP_LOGO_PATH | default('') %}
+{% set SERVICE_TITLE = 'My VPN' %}
 ```
 
-Priority is always:
+### `SERVICE_LOGO_URL`
+- Что делает: задаёт URL логотипа сервиса.
+- Fallback: пустая строка.
+- Используется только если `SERVICE_LOGO_PATH` пустой.
+- Пример:
 
-1. `*_PATH` if it is set and not empty.
-2. Otherwise `*_URL` if it is set and not empty.
-3. Otherwise the logo is not rendered.
+```jinja2
+{% set SERVICE_LOGO_URL = 'https://example.com/logo.png' %}
+```
 
-In the template this is resolved as:
+### `SERVICE_LOGO_PATH`
+- Что делает: задаёт web-accessible path для логотипа сервиса.
+- Fallback: пустая строка.
+- Имеет приоритет над `SERVICE_LOGO_URL`.
+- Пример:
+
+```jinja2
+{% set SERVICE_LOGO_PATH = '/statics/subscription/branding/logo.png' %}
+```
+
+### `HAPP_LOGO_URL`
+- Что делает: задаёт URL логотипа Happ.
+- Fallback: встроенное base64-изображение.
+- Используется только если `HAPP_LOGO_PATH` пустой.
+- Пример:
+
+```jinja2
+{% set HAPP_LOGO_URL = 'https://example.com/happ-logo.png' %}
+```
+
+### `HAPP_LOGO_PATH`
+- Что делает: задаёт web-accessible path для логотипа Happ.
+- Fallback: пустая строка.
+- Имеет приоритет над `HAPP_LOGO_URL`.
+- Пример:
+
+```jinja2
+{% set HAPP_LOGO_PATH = '/statics/subscription/branding/happ-logo.png' %}
+```
+
+### `TELEGRAM_CHANNEL_URL`
+- Что делает: задаёт ссылку на Telegram-канал в карточке подписки.
+- Fallback: `https://t.me/your_channel_here`.
+- Пример:
+
+```jinja2
+{% set TELEGRAM_CHANNEL_URL = 'https://t.me/my_channel' %}
+```
+
+### `TELEGRAM_SUPPORT_URL`
+- Что делает: задаёт ссылку на чат поддержки в карточке подписки.
+- Fallback: `https://t.me/your_support_chat_here`.
+- Пример:
+
+```jinja2
+{% set TELEGRAM_SUPPORT_URL = 'https://t.me/my_support' %}
+```
+
+## Настройка логотипов
+
+Логика выбора логотипов в шаблоне одинакова для сервиса и Happ:
+
+1. если задан `*_PATH`, используется он;
+2. иначе, если задан `*_URL`, используется он;
+3. иначе логотип не показывается.
+
+Примеры итоговой логики:
 
 ```jinja2
 {% set SERVICE_LOGO_SRC = SERVICE_LOGO_PATH if SERVICE_LOGO_PATH else SERVICE_LOGO_URL %}
 {% set HAPP_LOGO_SRC = HAPP_LOGO_PATH if HAPP_LOGO_PATH else HAPP_LOGO_URL %}
 ```
 
-Use `*_PATH` only for **web-accessible paths** served by Marzban / your reverse proxy. This is **not** a Linux filesystem path like `/var/lib/...`; it must be a browser URL path such as:
+Важно: `*_PATH` должен быть именно web-accessible path, а не путь файловой системы.
+
+Правильно:
 
 ```text
-/statics/subscription/branding/swiftless-logo.png
+/statics/subscription/branding/logo.png
 /statics/subscription/branding/happ-logo.png
 ```
 
-Example directory structure on the server:
+Неправильно:
 
 ```text
-/opt/marzban/statics/subscription/branding/
-  swiftless-logo.png
-  happ-logo.png
+/var/lib/marzban/templates/logo.png
+/opt/marzban/statics/logo.png
 ```
 
-Example with external URLs:
+## Настройка Telegram-ссылок
+
+Чтобы задать свои ссылки, достаточно поменять значения переменных в начале `subscription/index.html` или передавать их из backend при рендеринге шаблона.
+
+Базовый вариант — прописать свои значения прямо в файле:
 
 ```jinja2
-{% set SERVICE_LOGO_URL = 'https://example.com/logo.png' %}
-{% set SERVICE_LOGO_PATH = '' %}
-{% set HAPP_LOGO_URL = 'https://example.com/happ-logo.png' %}
-{% set HAPP_LOGO_PATH = '' %}
+{% set TELEGRAM_CHANNEL_URL = 'https://t.me/my_channel' %}
+{% set TELEGRAM_SUPPORT_URL = 'https://t.me/my_support' %}
 ```
 
-Example with local static files:
+## Настройка Happ
 
-```jinja2
-{% set SERVICE_LOGO_URL = '' %}
-{% set SERVICE_LOGO_PATH = '/statics/subscription/branding/swiftless-logo.png' %}
-{% set HAPP_LOGO_URL = '' %}
-{% set HAPP_LOGO_PATH = '/statics/subscription/branding/happ-logo.png' %}
+Шаблон уже содержит:
+
+- ссылки на Happ для iOS, Android, Windows, macOS и Linux;
+- deeplink добавления подписки через `happ://add/...`;
+- deeplink добавления роутинга через `happ://routing/add/...`;
+- блоки инструкций для каждой платформы.
+
+Если официальные ссылки Happ изменятся, обновите их в `subscription/index.html` и затем перезагрузите шаблон на сервере.
+
+## Demo
+
+Статическое demo находится в `docs/index.html`.
+
+Особенности demo:
+
+- без Jinja;
+- без зависимости от backend Marzban;
+- со статическими безопасными данными;
+- визуально повторяет текущий основной шаблон из `subscription/index.html`.
+
+Используемые demo-данные:
+
+- имя подписки: `demo_user`;
+- статус: `Активна`;
+- трафик: `12.4 GB / 100 GB`;
+- истекает: `2027-04-18 09:05:36`;
+- Telegram-ссылки: безопасные заглушки;
+- конфиги: демонстрационные VLESS / Shadowsocks / Trojan ссылки.
+
+GitHub Pages URL для этого репозитория:
+
+```text
+https://indie-master.github.io/marzban-subpage/
 ```
 
-If both values are empty, the corresponding `<img>` is omitted and the layout remains unchanged.
+Если GitHub Pages ещё не включён, его нужно настроить на публикацию из ветки `master` и директории `docs/`.
 
----
+## Обновление
 
-### 3. Happ download & deeplinks
-
-All Happ links and deeplinks (App Store, TestFlight, Google Play, APK, Windows, macOS, Linux, routing) are centralized in a small JS configuration object inside `index.html`.
-If the official Happ download URLs change, update them there, redeploy the template and restart Marzban.
-
----
-
-### 4. Screenshot images for instructions
-
-Each platform section (iOS / Android / Windows / macOS / Linux) contains a block like:
-
-```html
-<img src="/statics/subscription/happ/ios-step1.png"
-     class="img-fluid rounded shadow-sm"
-     alt="Happ iOS step 1"
-     onerror="this.style.display='none';">
-```
-
-To add your own screenshots:
-
-1. Create a directory on the server:
-
-   ```bash
-   sudo mkdir -p /opt/marzban/statics/subscription/happ
-   ```
-
-2. Copy your PNG/JPEG files there, for example:
-
-   * `/opt/marzban/statics/subscription/happ/ios-step1.png`
-   * `/opt/marzban/statics/subscription/happ/ios-step2.png`
-   * `/opt/marzban/statics/subscription/happ/ios-step3.png`
-
-3. Make sure your Marzban container (or reverse proxy) serves `/statics` from `/opt/marzban/statics`.
-   This is the default for the official Docker setup.
-
-You can change filenames or paths in `index.html` if needed.
-
----
-
-## Updating
-
-To update the template from GitHub:
+Чтобы обновить шаблон на сервере:
 
 ```bash
 sudo wget -O /var/lib/marzban/templates/subscription/index.html \
   https://raw.githubusercontent.com/indie-master/marzban-subpage/master/subscription/index.html
-
 sudo marzban restart
 ```
 
-If you have local customizations (texts, links, screenshots), you may want to keep them in a separate branch or re-apply after updating.
+Если вы обновляли документацию или demo, для Marzban-сервера нужно переобновлять только `subscription/index.html`.
 
----
+## Лицензия
 
-## License
-
-MIT, see the original repository.
+В репозитории не указан отдельный файл лицензии. Используйте шаблон в соответствии с политикой вашего проекта и правилами исходного репозитория.
