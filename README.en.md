@@ -217,9 +217,7 @@ Demo values include:
 
 GitHub Pages URL for this repository:
 
-```text
 https://indie-master.github.io/marzban-subpage/
-```
 
 If GitHub Pages is not enabled yet, publish the `docs/` directory from the `master` branch.
 
