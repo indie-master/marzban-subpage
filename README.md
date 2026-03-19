@@ -14,6 +14,24 @@ Custom subscription page template for [Marzban](https://github.com/Gozargah/Marz
 
 ---
 
+
+## Live demo
+
+You can preview the template here:
+
+`https://indie-master.github.io/marzban-subpage/`
+
+To publish the demo via GitHub Pages (the site may return 404 until publication finishes):
+
+1. Open repository **Settings**.
+2. Go to **Pages**.
+3. In **Build and deployment**, choose **Source: Deploy from a branch**.
+4. Select branch **master**.
+5. Select folder **/docs**.
+6. Click **Save** and wait a few minutes for the site to be published.
+
+---
+
 ## Features
 
 - ✅ Compatible with Marzban’s `SUBSCRIPTION_PAGE_TEMPLATE`
