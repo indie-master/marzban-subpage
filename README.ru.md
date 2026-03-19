@@ -144,7 +144,7 @@ sudo marzban restart
 Важно: `*_PATH` — это **web-accessible path**, который реально доступен браузеру через Marzban / reverse proxy. Это **не** системный путь Linux вида `/var/lib/...`, а URL-путь, например:
 
 ```text
-/statics/subscription/branding/swiftless-logo.png
+/statics/subscription/branding/brand-logo.png
 /statics/subscription/branding/happ-logo.png
 ```
 
@@ -152,7 +152,7 @@ sudo marzban restart
 
 ```text
 /opt/marzban/statics/subscription/branding/
-  swiftless-logo.png
+  brand-logo.png
   happ-logo.png
 ```
 
